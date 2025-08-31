@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>處置條件</title>
+    
+    <h2>處置條件說明</h2>
+    <p>以下條件可能導致股票進入處置：<br>
+        <div style="padding-left: 2em;">
+            1. 連續三日符合第一款條件。<br>
+            2. 連續五日符合第1~8款條件。<br>
+            3. 十日內有六日符合第1~8款條件。<br>
+            4. 二十九日內有十一日符合第1~8款條件。
+        </div>
+    </p>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 8px;
+            display: inline-block;
+            text-align: center;
+            width: 150px;
+            cursor: pointer;
+            background-color: #f9f9f9;
+        }
+        /* .card:hover {
+            background-color: #e9e9e9;
+        } */
+        .card.active {
+            background-color: e9e9e9;
+            /* color: white; */
+        }
+        .details-container {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px;
+            background-color: #f9f9f9;
+        }
+        .condition {
+            margin: 8px 0;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>待處置清單</h1>
+    <div id="card-container">
+        <!-- Cards will be populated here -->
+    </div>
+
+    <div id="details-container" class="details-container" style="display: none;">
+        <h1>詳細資訊</h1>
+        <h2 id="details-title">股票名稱與代號</h2>
+        <div id="triggerd_conditions">
+        </div>
+        <div id="conditions">
+            <h3>注意條件</h3>
+            <div class="condition">第1款</div>
+            <div class="condition">第2款</div>
+            <div class="condition">第3款</div>
+            <div class="condition">第4款</div>
+            <div class="condition">第5款</div>
+            <div class="condition">第6款</div>
+            <div class="condition">第7款</div>
+            <div class="condition">第8款</div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchPotentialDisposals() {
+            try {
+                const response = await fetch('/potential_disposals');
+                const data = await response.json();
+
+                // 確保資料正確
+                console.log(data);
+
+                // 獲取卡片容器元素
+                const cardContainer = document.getElementById('card-container');
+
+                // 清空卡片容器內容
+                cardContainer.innerHTML = '';
+
+                // 將資料插入卡片
+                data.forEach(stock => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h3>${stock["證券代號"]}</h3>
+                        <p>${stock["證券名稱"]}</p>
+                    `;
+
+                    // 添加點擊事件
+                    card.addEventListener('click', async () => {
+                        setActiveCard(card);
+                        const conditions = await fetchConditions(stock["證券代號"]);
+                        showDetails(stock, conditions);
+                    });
+
+                    cardContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error fetching potential disposals:', error);
+            }
+        }
+
+        async function fetchConditions(stockCode) {
+            try {
+                const response = await fetch(`/stocks/${stockCode}/conditions`);
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching conditions:', error);
+                return [];
+            }
+        }
+
+        function setActiveCard(card) {
+            // 移除所有卡片的 active 樣式
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(c => c.classList.remove('active'));
+
+            // 設置點擊的卡片為 active
+            card.classList.add('active');
+        }
+
+        function showDetails(stock, conditions) {
+            const detailsContainer = document.getElementById('details-container');
+            const detailsTitle = document.getElementById('details-title');
+            const triggerd_conditionsContainer = document.getElementById('triggerd_conditions');
+
+            // 更新詳細資訊
+            detailsTitle.textContent = `${stock["證券名稱"]} (${stock["證券代號"]})`;
+
+            // 清空並更新注意條件
+            triggerd_conditionsContainer.innerHTML = '';
+            conditions.forEach(triggerd_condition => {
+                const triggerd_conditionElement = document.createElement('div');
+                triggerd_conditionElement.className = 'triggerd_condition';
+                triggerd_conditionElement.textContent = triggerd_condition;
+                triggerd_conditionsContainer.appendChild(triggerd_conditionElement);
+            });
+
+            // 顯示詳細資訊框
+            detailsContainer.style.display = 'block';
+        }
+
+        // 呼叫函式以獲取資料
+        fetchPotentialDisposals();
+    </script>
+</body>
+</html>

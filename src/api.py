@@ -1,0 +1,210 @@
+from flask import Flask, jsonify , render_template
+import sqlite3
+from apscheduler.schedulers.background import BackgroundScheduler
+from get_tse_notice_infos import fetch_data
+import info_to_df
+import get_trading_date
+
+app = Flask(__name__)
+
+def query_database(query, args=(), one=False):
+    conn = sqlite3.connect("stocks.db")
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute(query, args)
+    rv = cur.fetchall()
+    conn.close()
+    return (rv[0] if rv else None) if one else rv
+
+def get_last_n_trading_range(n, db_path="trading_date.db"):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    
+    # 查出最近 n 個交易日（最新在最後）
+    cursor.execute(f"""
+        SELECT date FROM trading_date
+        WHERE date <= DATE('now')
+        ORDER BY date DESC
+        LIMIT {n}
+    """)
+    dates = [row[0] for row in cursor.fetchall()]
+    conn.close()
+    
+    # 確保足夠筆數才有範圍
+    if len(dates) < n:
+        return None, None
+    return min(dates), max(dates)  # start_day, last_day
+
+def generate_search_notice_info(n=1):
+    notice_numbers = list(range(1, n+1))
+    conditions = []
+
+    for n in notice_numbers:
+        conditions.extend([
+            f"`注意交易資訊` = '[{n}]'",
+            f"`注意交易資訊` LIKE '[{n},%'",
+            f"`注意交易資訊` LIKE '%, {n}]'",
+            f"`注意交易資訊` LIKE '%, {n},%'"
+        ])
+    
+    return "(" + " OR ".join(conditions) + ")"
+@app.route("/", methods=["GET"])
+def home():
+    return render_template("index.html")
+
+@app.route("/stocks", methods=["GET"])
+def get_stocks():
+    stocks = query_database("SELECT * FROM stocks")
+    return jsonify([dict(row) for row in stocks])
+
+@app.route("/stocks/<stock_id>", methods=["GET"])
+def get_stock(stock_id):
+    stock = query_database("SELECT * FROM stocks WHERE `證券代號` = ?", [stock_id], one=True)
+    return jsonify(dict(stock)) if stock else (jsonify({"error": "Stock not found"}), 404)
+
+@app.route("/potential_disposals", methods=["GET"])
+def get_potential_disposals():
+    # 拿出不同條件所需的交易日範圍
+    start_day_2, last_day_2 = get_last_n_trading_range(2)
+    start_day_4, last_day_4 = get_last_n_trading_range(4)
+    start_day_9, last_day_9 = get_last_n_trading_range(9)
+    start_day_29, last_day_29 = get_last_n_trading_range(29)
+    
+    search_notice_info_1 = generate_search_notice_info(1)
+    search_notice_info_8 = generate_search_notice_info(8)
+    if not (start_day_2 and start_day_4 and start_day_9 and start_day_29):
+        return jsonify({"error": "無法取得足夠的交易日資料"}), 500
+
+    query = f"""
+    SELECT DISTINCT `證券代號`, `證券名稱`, `注意交易資訊`, `累計次數`, `日期`
+    FROM stocks
+    WHERE (
+        `證券代號` IN (
+            SELECT `證券代號`
+            FROM stocks
+            WHERE {search_notice_info_1}
+            AND `日期` BETWEEN DATE('{start_day_2}') AND DATE('{last_day_2}')
+            GROUP BY `證券代號`
+            HAVING COUNT(DISTINCT `日期`) = 2
+        )
+        AND `日期` BETWEEN DATE('{start_day_2}') AND DATE('{last_day_2}')
+    ) OR (
+        `證券代號` IN (
+            SELECT `證券代號`
+            FROM stocks
+            WHERE {search_notice_info_8}
+            AND `日期` BETWEEN DATE('{start_day_4}') AND DATE('{last_day_4}')
+            GROUP BY `證券代號`
+            HAVING COUNT(DISTINCT `日期`) >= 4
+        )
+        AND `日期` BETWEEN DATE('{start_day_4}') AND DATE('{last_day_4}')
+    ) OR (
+        `證券代號` IN (
+            SELECT `證券代號`
+            FROM stocks
+            WHERE {search_notice_info_8}
+            AND `日期` BETWEEN DATE('{start_day_9}') AND DATE('{last_day_9}')
+            GROUP BY `證券代號`
+            HAVING COUNT(DISTINCT `日期`) >= 5
+        )
+        AND `日期` BETWEEN DATE('{start_day_9}') AND DATE('{last_day_9}')
+    ) OR (
+        `證券代號` IN (
+            SELECT `證券代號`
+            FROM stocks
+            WHERE {search_notice_info_8}
+            AND `日期` BETWEEN DATE('{start_day_29}') AND DATE('{last_day_29}')
+            GROUP BY `證券代號`
+            HAVING COUNT(DISTINCT `日期`) >= 11
+        )
+        AND `日期` BETWEEN DATE('{start_day_29}') AND DATE('{last_day_29}')
+    )
+    """
+    stocks = query_database(query)
+
+    # Extract unique stock names and codes
+    unique_stocks = {}
+    for row in stocks:
+        stock_code = row["證券代號"]
+        stock_name = row["證券名稱"]
+        if stock_code not in unique_stocks:
+            unique_stocks[stock_code] = stock_name
+
+    # Return only unique stock names and codes
+    return jsonify([{ "證券代號": code, "證券名稱": name } for code, name in unique_stocks.items()])
+
+@app.route("/stocks/<stock_id>/conditions", methods=["GET"])
+def get_stock_conditions(stock_id):
+    # 獲取最近的交易日範圍
+    start_day_2, last_day_2 = get_last_n_trading_range(2)
+    start_day_4, last_day_4 = get_last_n_trading_range(4)
+    start_day_9, last_day_9 = get_last_n_trading_range(9)
+    start_day_29, last_day_29 = get_last_n_trading_range(29)
+
+    if not (start_day_2 and start_day_4 and start_day_9 and start_day_29):
+        return jsonify({"error": "無法取得足夠的交易日資料"}), 500
+
+    # 定義條件
+    conditions = []
+
+    # 條件 1: 連續 2 日符合第一款條件
+    query_1 = f"""
+        SELECT COUNT(DISTINCT `日期`) as count
+        FROM stocks
+        WHERE `證券代號` = ?
+        AND {generate_search_notice_info(1)}
+        AND `日期` BETWEEN DATE('{start_day_2}') AND DATE('{last_day_2}')
+    """
+    result_1 = query_database(query_1, [stock_id], one=True)
+    if result_1 and result_1["count"] == 2:
+        conditions.append("連續 2 日符合第一款條件")
+
+    # 條件 2: 連續 4 日符合第 1~8 款條件
+    query_2 = f"""
+        SELECT COUNT(DISTINCT `日期`) as count
+        FROM stocks
+        WHERE `證券代號` = ?
+        AND {generate_search_notice_info(8)}
+        AND `日期` BETWEEN DATE('{start_day_4}') AND DATE('{last_day_4}')
+    """
+    result_2 = query_database(query_2, [stock_id], one=True)
+    if result_2 and result_2["count"] >= 4:
+        conditions.append("連續 4 日符合第 1~8 款條件")
+
+    # 條件 3: 9 日內有 5 日符合第 1~8 款條件
+    query_3 = f"""
+        SELECT COUNT(DISTINCT `日期`) as count
+        FROM stocks
+        WHERE `證券代號` = ?
+        AND {generate_search_notice_info(8)}
+        AND `日期` BETWEEN DATE('{start_day_9}') AND DATE('{last_day_9}')
+    """
+    result_3 = query_database(query_3, [stock_id], one=True)
+    if result_3 and result_3["count"] >= 5:
+        conditions.append("9 日內有 5 日符合第 1~8 款條件")
+
+    # 條件 4: 29 日內有 11 日符合第 1~8 款條件
+    query_4 = f"""
+        SELECT COUNT(DISTINCT `日期`) as count
+        FROM stocks
+        WHERE `證券代號` = ?
+        AND {generate_search_notice_info(8)}
+        AND `日期` BETWEEN DATE('{start_day_29}') AND DATE('{last_day_29}')
+    """
+    result_4 = query_database(query_4, [stock_id], one=True)
+    if result_4 and result_4["count"] >= 11:
+        conditions.append("29 日內有 11 日符合第 1~8 款條件")
+
+    return jsonify(conditions)
+
+def update_data():
+    fetch_data()
+    info_to_df.save_to_database()
+    get_trading_date.save_to_database()
+    
+scheduler = BackgroundScheduler()
+scheduler.add_job(update_data, 'cron', hour=0, minute=0)
+scheduler.start()
+
+if __name__ == "__main__":
+    app.run(debug=True)
