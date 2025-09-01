@@ -2,13 +2,13 @@ from flask import Flask, jsonify , render_template, request
 import sqlite3
 from apscheduler.schedulers.background import BackgroundScheduler
 from get_stock_notice_infos import fetch_data
-import info_to_df
+import notice_info_to_df
 import get_trading_date
 
 app = Flask(__name__)
 
 def query_database(query, args=(), one=False):
-    conn = sqlite3.connect("stocks.db")
+    conn = sqlite3.connect("notice_stocks.db")
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     cur.execute(query, args)
@@ -217,7 +217,7 @@ def get_stock_conditions(stock_id):
 
 def update_data():
     fetch_data()
-    info_to_df.save_to_database()
+    notice_info_to_df.save_to_database()
     get_trading_date.save_to_database()
     print(123)
     

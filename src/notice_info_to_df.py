@@ -10,7 +10,7 @@ def convert_date(date_str):
     day = int(date_str[7:9])
     return f"{year}-{month:02d}-{day:02d}"
 
-def save_to_database(df, db_name="stocks.db"):
+def save_to_database(df, db_name="notice_stocks.db"):
     conn = sqlite3.connect(db_name)
     df.to_sql("stocks", conn, if_exists="replace", index=False)
     conn.close()
@@ -74,7 +74,7 @@ for idx, data_source in enumerate(datas):
     # Convert the list in "注意交易資訊" to a JSON string before saving to the database
     data["注意交易資訊"] = data["注意交易資訊"].apply(lambda x: json.dumps(x, ensure_ascii=False))
 
-    conn = sqlite3.connect("stocks.db")
+    conn = sqlite3.connect("notice_stocks.db")
     if idx == 0:
         # 第一次直接清空（replace）
         data.to_sql("stocks", conn, if_exists="replace", index=False)
@@ -84,5 +84,5 @@ for idx, data_source in enumerate(datas):
     conn.close()
     
 if __name__ == "__main__":
-    df= pd.read_sql("SELECT * FROM stocks", sqlite3.connect("stocks.db"))
+    df= pd.read_sql("SELECT * FROM stocks", sqlite3.connect("notice_stocks.db"))
     print(df)
