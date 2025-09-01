@@ -62,6 +62,15 @@ def get_stock(stock_id):
     stock = query_database("SELECT * FROM stocks WHERE `證券代號` = ?", [stock_id], one=True)
     return jsonify(dict(stock)) if stock else (jsonify({"error": "Stock not found"}), 404)
 
+def query_punished_stocks():
+    conn = sqlite3.connect("punished_stocks.db")
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("SELECT `證券代號` FROM stocks")
+    punished_stocks = {row["證券代號"] for row in cur.fetchall()}
+    conn.close()
+    return punished_stocks
+
 @app.route("/potential_disposals", methods=["GET"])
 def get_potential_disposals():
     # 取得來源參數
@@ -140,16 +149,26 @@ def get_potential_disposals():
     """
     stocks = query_database(query)
 
+    # 查詢已處置股票
+    punished_stocks = query_punished_stocks()
+
     # Extract unique stock names and codes
     unique_stocks = {}
     for row in stocks:
         stock_code = row["證券代號"]
         stock_name = row["證券名稱"]
+        is_punished = stock_code in punished_stocks
         if stock_code not in unique_stocks:
-            unique_stocks[stock_code] = stock_name
+            unique_stocks[stock_code] = {"證券名稱": stock_name, "已處置": is_punished}
 
     # Return only unique stock names and codes
-    return jsonify([{ "證券代號": code, "證券名稱": name } for code, name in unique_stocks.items()])
+    return jsonify([{ "證券代號": code, "證券名稱": info["證券名稱"], "已處置": info["已處置"] } for code, info in unique_stocks.items()])
+
+@app.route("/disposed_stocks", methods=["GET"])
+def get_disposed_stocks():
+    punished_stocks = query_punished_stocks()
+    stocks = [{"證券代號": code} for code in punished_stocks]
+    return jsonify(stocks)
 
 @app.route("/stocks/<stock_id>/conditions", methods=["GET"])
 def get_stock_conditions(stock_id):

@@ -86,6 +86,11 @@
         <!-- Cards will be populated here -->
     </div>
 
+    <div id="disposed-container">
+        <h1>已處置清單</h1>
+        <!-- Disposed cards will be populated here -->
+    </div>
+
     <div id="details-container" class="details-container" style="display: none;">
         <h1>詳細資訊</h1>
         <h2 id="details-title">股票名稱與代號</h2>
@@ -119,9 +124,11 @@
 
                 // 獲取卡片容器元素
                 const cardContainer = document.getElementById('card-container');
+                const disposedContainer = document.getElementById('disposed-container');
 
                 // 清空卡片容器內容
                 cardContainer.innerHTML = '';
+                disposedContainer.innerHTML = '<h1>已處置清單</h1>';
 
                 // 將資料插入卡片
                 data.forEach(stock => {
@@ -139,7 +146,11 @@
                         showDetails(stock, conditions);
                     });
 
-                    cardContainer.appendChild(card);
+                    if (stock["已處置"] === true) {
+                        disposedContainer.appendChild(card);
+                    } else {
+                        cardContainer.appendChild(card);
+                    }
                 });
             } catch (error) {
                 console.error('Error fetching potential disposals:', error);
@@ -210,8 +221,47 @@
             detailsContainer.style.display = 'block';
         }
 
-    // 預設載入全部
-    fetchPotentialDisposals("all");
+        async function fetchDisposedStocks() {
+            try {
+                const response = await fetch('/disposed_stocks');
+                const data = await response.json();
+
+                // 確保資料正確
+                console.log('Disposed Stocks:', data);
+
+                // 獲取已處置卡片容器元素
+                const disposedContainer = document.getElementById('disposed-container');
+
+                // 清空已處置卡片容器內容
+                disposedContainer.innerHTML = '<h1>已處置清單</h1>';
+
+                // 將資料插入卡片
+                data.forEach(stock => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h3>${stock["證券代號"]}</h3>
+                    `;
+
+                    // 添加點擊事件
+                    card.addEventListener('click', () => {
+                        alert(`已處置股票：${stock["證券代號"]}`);
+                    });
+
+                    disposedContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error fetching disposed stocks:', error);
+            }
+        }
+
+        // 預設載入全部
+        fetchPotentialDisposals("all");
+
+        // 預設載入已處置清單
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchDisposedStocks();
+        });
     </script>
 </body>
 </html>
