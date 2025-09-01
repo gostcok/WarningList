@@ -13,7 +13,6 @@ def fetch_data() -> pd.DataFrame:
 
     today = datetime.now()
     start_date = (today - timedelta(days=90))
-    
     TSE_query = {
         "querytype": 1,
         "stockNo": "",
@@ -25,8 +24,8 @@ def fetch_data() -> pd.DataFrame:
         "_": time.time() * 1000
     }
     OTC_query = {
-        "startDate": start_date.strftime("%Y%m%d"),
-        "endDate": today.strftime("%Y%m%d"),
+        "startDate": start_date.strftime("%Y/%m/%d"),
+        "endDate": today.strftime("%Y/%m/%d"),
         "code": "",
         "cate": "",
         "type": "all",

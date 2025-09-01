@@ -1,4 +1,4 @@
-from flask import Flask, jsonify , render_template
+from flask import Flask, jsonify , render_template, request
 import sqlite3
 from apscheduler.schedulers.background import BackgroundScheduler
 from get_stock_notice_infos import fetch_data
@@ -64,16 +64,26 @@ def get_stock(stock_id):
 
 @app.route("/potential_disposals", methods=["GET"])
 def get_potential_disposals():
+    # 取得來源參數
+    source = request.args.get("source", "all")
+
     # 拿出不同條件所需的交易日範圍
     start_day_2, last_day_2 = get_last_n_trading_range(2)
     start_day_4, last_day_4 = get_last_n_trading_range(4)
     start_day_9, last_day_9 = get_last_n_trading_range(9)
     start_day_29, last_day_29 = get_last_n_trading_range(29)
-    
+
     search_notice_info_1 = generate_search_notice_info(1)
     search_notice_info_8 = generate_search_notice_info(8)
     if not (start_day_2 and start_day_4 and start_day_9 and start_day_29):
         return jsonify({"error": "無法取得足夠的交易日資料"}), 500
+
+    # 根據 source 加入條件
+    source_condition = ""
+    if source == "TSE":
+        source_condition = "AND `Source` = 'TSE'"
+    elif source == "OTC":
+        source_condition = "AND `Source` = 'OTC'"
 
     query = f"""
     SELECT DISTINCT `證券代號`, `證券名稱`, `注意交易資訊`, `累計次數`, `日期`
@@ -84,40 +94,48 @@ def get_potential_disposals():
             FROM stocks
             WHERE {search_notice_info_1}
             AND `日期` BETWEEN DATE('{start_day_2}') AND DATE('{last_day_2}')
+            {source_condition}
             GROUP BY `證券代號`
             HAVING COUNT(DISTINCT `日期`) = 2
         )
         AND `日期` BETWEEN DATE('{start_day_2}') AND DATE('{last_day_2}')
+        {source_condition}
     ) OR (
         `證券代號` IN (
             SELECT `證券代號`
             FROM stocks
             WHERE {search_notice_info_8}
             AND `日期` BETWEEN DATE('{start_day_4}') AND DATE('{last_day_4}')
+            {source_condition}
             GROUP BY `證券代號`
             HAVING COUNT(DISTINCT `日期`) >= 4
         )
         AND `日期` BETWEEN DATE('{start_day_4}') AND DATE('{last_day_4}')
+        {source_condition}
     ) OR (
         `證券代號` IN (
             SELECT `證券代號`
             FROM stocks
             WHERE {search_notice_info_8}
             AND `日期` BETWEEN DATE('{start_day_9}') AND DATE('{last_day_9}')
+            {source_condition}
             GROUP BY `證券代號`
             HAVING COUNT(DISTINCT `日期`) >= 5
         )
         AND `日期` BETWEEN DATE('{start_day_9}') AND DATE('{last_day_9}')
+        {source_condition}
     ) OR (
         `證券代號` IN (
             SELECT `證券代號`
             FROM stocks
             WHERE {search_notice_info_8}
             AND `日期` BETWEEN DATE('{start_day_29}') AND DATE('{last_day_29}')
+            {source_condition}
             GROUP BY `證券代號`
             HAVING COUNT(DISTINCT `日期`) >= 11
         )
         AND `日期` BETWEEN DATE('{start_day_29}') AND DATE('{last_day_29}')
+        {source_condition}
     )
     """
     stocks = query_database(query)
@@ -201,6 +219,7 @@ def update_data():
     fetch_data()
     info_to_df.save_to_database()
     get_trading_date.save_to_database()
+    print(123)
     
 scheduler = BackgroundScheduler()
 scheduler.add_job(update_data, 'cron', hour=0, minute=0)

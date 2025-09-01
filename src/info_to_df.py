@@ -41,16 +41,17 @@ with open("OTC_notice.json", "r", encoding="utf-8") as f:
     OTC_data = json.load(f)
     datas.append(OTC_data)
 
-for data_source in datas:
+for idx, data_source in enumerate(datas):
     if data_source == TSE_data:
         data = pd.DataFrame(data_source["data"], columns=data_source["fields"])
+        data['Source'] = 'TSE'
     elif data_source == OTC_data:
         data = pd.DataFrame(data_source['tables'][0]["data"], columns=data_source['tables'][0]["fields"])
         data.rename(columns={
             "累計": "累計次數",
             "公告日期": "日期"
         }, inplace=True)
-
+        data['Source'] = 'OTC'
 
     data["證券代號"] = data["證券代號"].astype(str)
     data["累計次數"] = data["累計次數"].astype(object)
@@ -72,8 +73,16 @@ for data_source in datas:
     data["日期"] = data["日期"].apply(convert_date)
     # Convert the list in "注意交易資訊" to a JSON string before saving to the database
     data["注意交易資訊"] = data["注意交易資訊"].apply(lambda x: json.dumps(x, ensure_ascii=False))
+
+    conn = sqlite3.connect("stocks.db")
+    if idx == 0:
+        # 第一次直接清空（replace）
+        data.to_sql("stocks", conn, if_exists="replace", index=False)
+    else:
+        # 之後都用 append
+        data.to_sql("stocks", conn, if_exists="append", index=False)
+    conn.close()
     
-    # Save DataFrame to SQLite database
-    save_to_database(data)
 if __name__ == "__main__":
-    pass
+    df= pd.read_sql("SELECT * FROM stocks", sqlite3.connect("stocks.db"))
+    print(df)

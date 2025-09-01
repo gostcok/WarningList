@@ -11,7 +11,7 @@
             1. 連續三日符合第一款條件。<br>
             2. 連續五日符合第1~8款條件。<br>
             3. 十日內有六日符合第1~8款條件。<br>
-            4. 二十九日內有十一日符合第1~8款條件。
+            4. 三十日內有十二日符合第1~8款條件。
         </div>
     </p>
 
@@ -39,11 +39,11 @@
             cursor: pointer;
             background-color: #f9f9f9;
         }
-        /* .card:hover {
+        .card:hover {
             background-color: #e9e9e9;
-        } */
+        }
         .card.active {
-            background-color: e9e9e9;
+            background-color: #e9e9e9;
             /* color: white; */
         }
         .details-container {
@@ -60,10 +60,28 @@
             border-radius: 4px;
             background-color: #fff;
         }
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #888;
+            border-radius: 4px;
+            background: #fff;
+            cursor: pointer;
+            margin-left: 4px;
+        }
+        .filter-btn.active {
+            background: #e9e9e9;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <h1>待處置清單</h1>
+    <div style="display: flex; align-items: center; gap: 16px;">
+        <h1 style="margin: 0;">待處置清單</h1>
+        <button id="btn-all" class="filter-btn active">全部</button>
+        <button id="btn-tse" class="filter-btn">上市</button>
+        <button id="btn-otc" class="filter-btn">上櫃</button>
+    </div>
+        
     <div id="card-container">
         <!-- Cards will be populated here -->
     </div>
@@ -87,9 +105,13 @@
     </div>
 
     <script>
-        async function fetchPotentialDisposals() {
+        async function fetchPotentialDisposals(source = "all") {
             try {
-                const response = await fetch('/potential_disposals');
+                let url = '/potential_disposals';
+                if (source !== "all") {
+                    url += `?source=${source}`;
+                }
+                const response = await fetch(url);
                 const data = await response.json();
 
                 // 確保資料正確
@@ -123,6 +145,30 @@
                 console.error('Error fetching potential disposals:', error);
             }
         }
+
+        // 按鈕事件
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnAll = document.getElementById('btn-all');
+            const btnTSE = document.getElementById('btn-tse');
+            const btnOTC = document.getElementById('btn-otc');
+            const btns = [btnAll, btnTSE, btnOTC];
+
+            btnAll.addEventListener('click', () => {
+                btns.forEach(btn => btn.classList.remove('active'));
+                btnAll.classList.add('active');
+                fetchPotentialDisposals("all");
+            });
+            btnTSE.addEventListener('click', () => {
+                btns.forEach(btn => btn.classList.remove('active'));
+                btnTSE.classList.add('active');
+                fetchPotentialDisposals("TSE");
+            });
+            btnOTC.addEventListener('click', () => {
+                btns.forEach(btn => btn.classList.remove('active'));
+                btnOTC.classList.add('active');
+                fetchPotentialDisposals("OTC");
+            });
+        });
 
         async function fetchConditions(stockCode) {
             try {
@@ -164,8 +210,8 @@
             detailsContainer.style.display = 'block';
         }
 
-        // 呼叫函式以獲取資料
-        fetchPotentialDisposals();
+    // 預設載入全部
+    fetchPotentialDisposals("all");
     </script>
 </body>
 </html>
