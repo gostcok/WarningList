@@ -1,7 +1,7 @@
 from flask import Flask, jsonify , render_template
 import sqlite3
 from apscheduler.schedulers.background import BackgroundScheduler
-from get_tse_notice_infos import fetch_data
+from get_stock_notice_infos import fetch_data
 import info_to_df
 import get_trading_date
 
