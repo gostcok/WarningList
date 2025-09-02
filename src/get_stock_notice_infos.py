@@ -37,30 +37,28 @@ def fetch_data(URL,query,period=90) -> pd.DataFrame:
             with open("OTC_notice.json", "w", encoding="utf-8") as f:
                 json.dump(res.json(), f, ensure_ascii=False, indent=4)
 
+TSE_URL = "https://www.twse.com.tw/rwd/zh/announcement/notice"
+OTC_URL = "https://www.tpex.org.tw/www/zh-tw/bulletin/attention"
 
-if __name__ == "__main__":
-    TSE_URL = "https://www.twse.com.tw/rwd/zh/announcement/notice"
-    OTC_URL = "https://www.tpex.org.tw/www/zh-tw/bulletin/attention"
-    
-    TSE_query = {
-        "querytype": 1,
-        "stockNo": "",
-        "selectType": "",
-        "startDate": "",
-        "endDate": "",
-        "sortKind": "STKNO",
-        "response": "json",
-        "_": time.time() * 1000
-    }
-    OTC_query = {
-        "startDate": "",
-        "endDate": "",
-        "code": "",
-        "cate": "",
-        "type": "all",
-        "order": "date",
-        "id": "",
-        "response": "json",
-    }
-    for URL,query in [(TSE_URL,TSE_query),(OTC_URL,OTC_query)]:
-        fetch_data(URL, query)
+TSE_query = {
+    "querytype": 1,
+    "stockNo": "",
+    "selectType": "",
+    "startDate": "",
+    "endDate": "",
+    "sortKind": "STKNO",
+    "response": "json",
+    "_": time.time() * 1000
+}
+OTC_query = {
+    "startDate": "",
+    "endDate": "",
+    "code": "",
+    "cate": "",
+    "type": "all",
+    "order": "date",
+    "id": "",
+    "response": "json",
+}
+for URL,query in [(TSE_URL,TSE_query),(OTC_URL,OTC_query)]:
+    fetch_data(URL, query)

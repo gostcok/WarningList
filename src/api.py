@@ -63,12 +63,24 @@ def get_stock(stock_id):
     stock = query_database("SELECT * FROM stocks WHERE `證券代號` = ?", [stock_id], one=True)
     return jsonify(dict(stock)) if stock else (jsonify({"error": "Stock not found"}), 404)
 
-def query_punished_stocks():
+def query_punished_stocks(Source="" , sort_by="end_date"):
     conn = sqlite3.connect("punished_stocks.db")
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
-    cur.execute("SELECT `證券代號`, `處置起始時間`, `處置結束時間` FROM stocks")
-    punished_stocks = {row["證券代號"] : {'處置起始時間' : row['處置起始時間'], '處置結束時間' : row['處置結束時間']} for row in cur.fetchall()}
+    if sort_by == "code":
+        sort_by_query = " ORDER BY `證券代號` ASC"
+    elif sort_by == "end_date":
+        sort_by_query = " ORDER BY `處置結束時間` ASC"
+    cur.execute(f"""
+                SELECT `證券代號`, `證券名稱`, `處置起始時間`, `處置結束時間` FROM stocks
+                WHERE 1=1 
+                {Source}
+                {sort_by_query}
+                """
+            )
+    punished_stocks = {row["證券代號"] : {'證券名稱' : row['證券名稱'],
+                                        '處置起始時間' : row['處置起始時間'],
+                                        '處置結束時間' : row['處置結束時間']} for row in cur.fetchall()}
     conn.close()
     return punished_stocks
 
@@ -76,6 +88,7 @@ def query_punished_stocks():
 def get_potential_disposals():
     # 取得來源參數
     source = request.args.get("source", "all")
+    sort_by = request.args.get("sort_by", "code")
 
     # 拿出不同條件所需的交易日範圍
     start_day_2, last_day_2 = get_last_n_trading_range(2)
@@ -148,34 +161,69 @@ def get_potential_disposals():
         {source_condition}
     )
     """
-    stocks = query_database(query)
+    notice_stocks = query_database(query)
 
     # 查詢已處置股票
-    punished_stocks = query_punished_stocks()
+    punished_stocks = query_punished_stocks(source_condition , sort_by = sort_by)
+
+    # 轉 dict，方便查詢
+    notice_dict = {s["證券代號"]: {"證券名稱" : s["證券名稱"]} for s in notice_stocks}
+
+    # 合併所有股票代號
+    all_stock = (notice_dict) | (punished_stocks)
     
     # Extract unique stock names and codes
     unique_stocks = {}
-    for row in stocks:
-        stock_code = row["證券代號"]
-        stock_name = row["證券名稱"]
+    for stock_code in all_stock:
+        stock_name = all_stock[stock_code]['證券名稱']
         is_punished = stock_code in punished_stocks
-        if stock_code not in unique_stocks:
-            unique_stocks[stock_code] = {"證券名稱": stock_name,
-                                         "已處置": is_punished ,
-                                         "處置起始時間": punished_stocks[stock_code]['處置起始時間'] if is_punished else "",
-                                         "處置結束時間": punished_stocks[stock_code]['處置結束時間'] if is_punished else ""}
+        unique_stocks[stock_code] = {
+            "證券名稱": stock_name,
+            "已處置": is_punished,
+            "處置起始時間": punished_stocks[stock_code]['處置起始時間'] if is_punished else "",
+            "處置結束時間": punished_stocks[stock_code]['處置結束時間'] if is_punished else ""
+        }
+    # 轉成 list 後依 sort_by 排序
+    result = [
+        {
+            "證券代號": code,
+            "證券名稱": info["證券名稱"],
+            "已處置": info["已處置"],
+            "處置起始時間": info["處置起始時間"],
+            "處置結束時間": info["處置結束時間"],
+        }
+        for code, info in unique_stocks.items()
+    ]
 
+    if sort_by == "code":
+        result.sort(key=lambda x: x["證券代號"])
+    else:  # end_date
+        # 將空值放最後，日期用 ISO 字串可直接比較；若不是 ISO，換成 datetime.strptime
+        def end_key(x):
+            v = x["處置結束時間"]
+            return ("~" if not v else "0") + (v or "")  # "~" 比任何數字/字母大，放最後
+        result.sort(key=end_key)
     # Return only unique stock names and codes
-    return jsonify([{ "證券代號": code, "證券名稱": info["證券名稱"], "已處置": info["已處置"], "處置起始時間": info["處置起始時間"], "處置結束時間": info["處置結束時間"] } for code, info in unique_stocks.items()])
+    return jsonify(result)
 
 @app.route("/disposed_stocks", methods=["GET"])
 def get_disposed_stocks():
+    sort_by = request.args.get("sort_by", "code")
+
     conn = sqlite3.connect("punished_stocks.db")
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
-    cur.execute("SELECT `證券代號`, `處置起迄時間` FROM stocks")
+
+    query = "SELECT `證券代號`, `處置結束時間` FROM stocks"
+
+    if sort_by == "code":
+        query += " ORDER BY `證券代號` ASC"
+    elif sort_by == "end_date":
+        query += " ORDER BY `處置結束時間` ASC"
+
+    cur.execute(query)
     stocks = [
-        {"證券代號": row["證券代號"], "處置起迄時間": row["處置起迄時間"]}
+        {"證券代號": row["證券代號"], "處置結束時間": row["處置結束時間"]}
         for row in cur.fetchall()
     ]
     conn.close()

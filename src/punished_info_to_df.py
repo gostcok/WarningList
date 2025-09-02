@@ -54,6 +54,7 @@ for idx, data_source in enumerate(datas):
         data['Source'] = 'TSE'
     if data_source == OTC_data:
         data = pd.DataFrame(data_source['tables'][0]["data"], columns=data_source['tables'][0]["fields"])
+        data['證券名稱'] = data['證券名稱'].str.split('(').str.get(0)
         data.drop(columns=['收盤價','本益比',' ','處置內容'], inplace=True)
         data.rename(columns={
             "處置原因": "處置條件",
@@ -61,7 +62,7 @@ for idx, data_source in enumerate(datas):
         }, inplace=True)
         data['Source'] = 'OTC'
         data=data[['編號', '公布日期', '證券代號', '證券名稱', '累計', '處置條件', '處置起迄時間', 'Source']]
-    
+        
 
     data["證券代號"] = data["證券代號"].astype(str)
     data = data[data["證券代號"].str.len() == 4]
@@ -85,6 +86,7 @@ for idx, data_source in enumerate(datas):
 
     data[['處置起始時間', '處置結束時間']] = data['處置起迄時間'].str.split('～', n=1, expand=True)
     
+    # data = data.sort_values(by="處置結束時間", ascending=True)
     # # Convert the list in "注意交易資訊" to a JSON string before saving to the database
     # data["注意交易資訊"] = data["注意交易資訊"].apply(lambda x: json.dumps(x, ensure_ascii=False))
 

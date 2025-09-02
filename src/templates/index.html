@@ -83,23 +83,35 @@
             background: #e9e9e9;
             font-weight: bold;
         }
+        .toolbar{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            flex-wrap:wrap;      /* 太窄時自動換行，但預設會在同一行 */
+            margin: 12px 0;
+        }
+        .toolbar h1{ margin:0; }
+        .btn-group{ display:flex; gap:8px; }
+        /* 讓互動狀態一眼就懂 */
+        .card { border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin: 8px; display: inline-block; text-align: center; width: 150px; background:#f9f9f9; }
+        .card--clickable { cursor: pointer; }
+        .card--clickable:hover { background-color: #e9e9e9; }
+        .card--disabled { cursor: default; opacity: 0.95; } /* or keep same color but無手指 */
+
     </style>
 </head>
 <body>
-    <div style="display: flex; align-items: center; gap: 16px;">
-        <h1 style="margin: 0;">待處置清單</h1>
-        <button id="btn-all" class="filter-btn active">全部</button>
-        <button id="btn-tse" class="filter-btn">上市</button>
-        <button id="btn-otc" class="filter-btn">上櫃</button>
+    <div id="notice-toolbar" class="toolbar">
+        <h1>待處置清單</h1>
+        <div class="btn-group">
+            <button id="btn-all" class="filter-btn active" data-source="all">全部</button>
+            <button id="btn-tse" class="filter-btn" data-source="TSE">上市</button>
+            <button id="btn-otc" class="filter-btn" data-source="OTC">上櫃</button>
+        </div>
     </div>
         
     <div id="card-container">
         <!-- Cards will be populated here -->
-    </div>
-
-    <div id="disposed-container">
-        <h1>已處置清單</h1>
-        <!-- Disposed cards will be populated here -->
     </div>
 
     <div id="details-container" class="details-container" style="display: none;">
@@ -120,81 +132,156 @@
         </div>
     </div>
 
+    <div id="punished-toolbar" class="toolbar">
+        <h1>已處置清單</h1>
+        <div class="btn-group">
+            <button id="sort-by-code" class="filter-btn"  data-sortby="code">依代號</button>
+            <button id="sort-by-end-date" class="filter-btn" data-sortby="end_date">依時間</button>
+        </div>
+    </div>
+
+    <div id="punished-container"></div>
+
+    
+
     <script>
-        async function fetchPotentialDisposals(source = "all") {
+        // 1) 全域狀態：來源 & 排序
+        const state = {
+            source: 'all',
+            sort_by: 'end_date',
+        };
+        // 全域快取，避免排序時重打 API
+        let lastData = [];
+
+        // 取資料
+        async function fetchPotentialDisposals({ source = 'all' } = {}) {
             try {
                 let url = '/potential_disposals';
-                if (source !== "all") {
-                    url += `?source=${source}`;
-                }
-                const response = await fetch(url);
-                const data = await response.json();
+                const params = new URLSearchParams();
+                if (source && source !== 'all') params.append('source', source);
+                if (params.toString()) url += `?${params.toString()}`;
 
-                // 確保資料正確
-                console.log(data);
+                const res = await fetch(url);
+                const data = await res.json();
 
-                // 獲取卡片容器元素
-                const cardContainer = document.getElementById('card-container');
-                const disposedContainer = document.getElementById('disposed-container');
-
-                // 清空卡片容器內容
-                cardContainer.innerHTML = '';
-                disposedContainer.innerHTML = '<h1>已處置清單</h1>';
-
-                // 將資料插入卡片
-                data.forEach(stock => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <h2>${stock["證券代號"]}</h2>
-                        <h3>${stock["證券名稱"]}</h3>
-                        ${stock["已處置"] && stock["處置起始時間"] ? `<h3 class="punished_duration">
-                            ${stock["處置起始時間"]}</br>
-                            |</br>
-                            ${stock["處置結束時間"]}
-                            </div>` : ""}
-                    `;
-
-                    // 添加點擊事件
-                    card.addEventListener('click', async () => {
-                        setActiveCard(card);
-                        const conditions = await fetchConditions(stock["證券代號"]);
-                        showDetails(stock, conditions);
-                    });
-
-                    if (stock["已處置"] === true) {
-                        disposedContainer.appendChild(card);
-                    } else {
-                        cardContainer.appendChild(card);
-                    }
-                });
-            } catch (error) {
-                console.error('Error fetching potential disposals:', error);
+                lastData = Array.isArray(data) ? data : [];
+                renderPotentialDisposals(lastData);
+            } catch (err) {
+                console.error('fetchPotentialDisposals error:', err);
             }
         }
 
-        // 按鈕事件
-        document.addEventListener('DOMContentLoaded', () => {
-            const btnAll = document.getElementById('btn-all');
-            const btnTSE = document.getElementById('btn-tse');
-            const btnOTC = document.getElementById('btn-otc');
-            const btns = [btnAll, btnTSE, btnOTC];
+        // 渲染（待處置不排序；已處置依 state.sort_by 排）
+        function renderPotentialDisposals(data) {
+            const cardContainer = document.getElementById('card-container');
+            const punishedContainer = document.getElementById('punished-container');
+            cardContainer.innerHTML = '';
+            punishedContainer.innerHTML = '';
 
-            btnAll.addEventListener('click', () => {
-                btns.forEach(btn => btn.classList.remove('active'));
-                btnAll.classList.add('active');
-                fetchPotentialDisposals("all");
+            const notice = [];
+            const punished = [];
+            data.forEach(s => (s["已處置"] ? punished : notice).push(s));
+
+            if (state.sort_by === 'code') {
+                punished.sort((a, b) => String(a["證券代號"]).localeCompare(String(b["證券代號"])));
+            } else {
+                const key = s => s["處置結束時間"] ? `0${s["處置結束時間"]}` : `~`;
+                punished.sort((a, b) => key(a).localeCompare(key(b)));
+            }
+
+            // 記住目前展開的卡片（股票代號）
+            
+
+            const makeCard = (stock) => {
+                const card = document.createElement('div');
+                const isPunished = !!stock["已處置"];
+                card.className = `card ${isPunished ? 'card--disabled' : 'card--clickable'}`;
+                if (isPunished) card.setAttribute('aria-disabled', 'true');
+
+                card.innerHTML = `
+                    <h2>${stock["證券代號"] ?? ''}</h2>
+                    <h3>${stock["證券名稱"] ?? ''}</h3>
+                    ${
+                    isPunished && stock["處置起始時間"]
+                        ? `<div class="punished_duration">
+                            ${stock["處置起始時間"] ?? ''}<br>|<br>${stock["處置結束時間"] ?? ''}
+                        </div>`
+                        : ''
+                    }
+                `;
+
+                // ✅ 只有「未處置」才可點開/收起詳細
+                if (!isPunished) {
+                    card.addEventListener('click', async () => {
+                    toggleDetails(stock, card);
+                    });
+                }
+
+                return card;
+            };
+
+            notice.forEach(s => cardContainer.appendChild(makeCard(s)));
+            punished.forEach(s => punishedContainer.appendChild(makeCard(s)));
+        }
+        let openStockCode = null;
+        // 切換詳細資訊：同一張卡片再點一次就收起
+        async function toggleDetails(stock, cardEl) {
+            const detailsContainer = document.getElementById('details-container');
+
+            // 如果是同一張卡片，就收起
+            if (openStockCode === stock["證券代號"]) {
+                openStockCode = null;
+                detailsContainer.style.display = 'none';
+                // 取消 active 樣式
+                document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+                return;
+            }
+
+            // 展開新的卡片
+            openStockCode = stock["證券代號"];
+
+            // 切換 active 樣式
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            cardEl.classList.add('active');
+
+            // 取條件並顯示
+            const conditions = await fetchConditions(stock["證券代號"]);
+            showDetails(stock, conditions);
+
+            // 確保在視窗可見（可選）
+            detailsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            // ✅ 修正：使用字串 ID
+            const srcBtns = ['btn-all', 'btn-tse', 'btn-otc']
+                .map(id => document.getElementById(id))
+                .filter(Boolean);
+
+            srcBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                srcBtns.forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                state.source = e.currentTarget.dataset.source;   // all / TSE / OTC
+                fetchPotentialDisposals({ source: state.source });
+                });
             });
-            btnTSE.addEventListener('click', () => {
-                btns.forEach(btn => btn.classList.remove('active'));
-                btnTSE.classList.add('active');
-                fetchPotentialDisposals("TSE");
+
+            const sortButtons = ['sort-by-code', 'sort-by-end-date']
+                .map(id => document.getElementById(id))
+                .filter(Boolean);
+
+            sortButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                sortButtons.forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                state.sort_by = e.currentTarget.dataset.sortby;  // code / end_date
+                // ✅ 不重打 API，直接用快取資料重渲染
+                renderPotentialDisposals(lastData);
+                });
             });
-            btnOTC.addEventListener('click', () => {
-                btns.forEach(btn => btn.classList.remove('active'));
-                btnOTC.classList.add('active');
-                fetchPotentialDisposals("OTC");
-            });
+
+            // 初始化
+            fetchPotentialDisposals({ source: state.source });
         });
 
         async function fetchConditions(stockCode) {
@@ -221,35 +308,32 @@
             const detailsTitle = document.getElementById('details-title');
             const triggerd_conditionsContainer = document.getElementById('triggerd_conditions');
 
-            // 更新詳細資訊
             detailsTitle.textContent = `${stock["證券名稱"]} (${stock["證券代號"]})`;
 
-            // 清空並更新注意條件
             triggerd_conditionsContainer.innerHTML = '';
-            conditions.forEach(triggerd_condition => {
-                const triggerd_conditionElement = document.createElement('div');
-                triggerd_conditionElement.className = 'triggerd_condition';
-                triggerd_conditionElement.textContent = triggerd_condition;
-                triggerd_conditionsContainer.appendChild(triggerd_conditionElement);
+            conditions.forEach(text => {
+                const el = document.createElement('div');
+                el.className = 'triggerd_condition';
+                el.textContent = text;
+                triggerd_conditionsContainer.appendChild(el);
             });
 
-            // 顯示詳細資訊框
             detailsContainer.style.display = 'block';
         }
 
-        async function fetchDisposedStocks() {
+        async function fetchDisposedStocks(sortBy = "code") {
             try {
-                const response = await fetch('/disposed_stocks');
+                const response = await fetch(`/disposed_stocks?sort_by=${sortBy}`);
                 const data = await response.json();
 
                 // 確保資料正確
                 console.log('Disposed Stocks:', data);
 
                 // 獲取已處置卡片容器元素
-                const disposedContainer = document.getElementById('disposed-container');
+                const punishedContainer = document.getElementById('punished-container');
 
                 // 清空已處置卡片容器內容
-                disposedContainer.innerHTML = '<h1>已處置清單</h1>';
+                punishedContainer.innerHTML = '';
 
                 // 將資料插入卡片
                 data.forEach(stock => {
@@ -257,22 +341,18 @@
                     card.className = 'card';
                     card.innerHTML = `
                         <h3>${stock["證券代號"]}</h3>
+                        <p>處置結束時間: ${stock["處置結束時間"]}</p>
                     `;
 
-                    // 添加點擊事件
-                    card.addEventListener('click', () => {
-                        alert(`已處置股票：${stock["證券代號"]}`);
-                    });
-
-                    disposedContainer.appendChild(card);
+                    punishedContainer.appendChild(card);
                 });
             } catch (error) {
-                console.error('Error fetching disposed stocks:', error);
+                console.error('Error fetching punished stocks:', error);
             }
         }
 
         // 預設載入全部
-        fetchPotentialDisposals("all");
+        fetchPotentialDisposals({ source: 'all', sort_by: 'end_date' });
 
         // 預設載入已處置清單
         document.addEventListener('DOMContentLoaded', () => {
