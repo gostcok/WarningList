@@ -7,7 +7,7 @@ import json
 
 from loguru import logger
 
-def fetch_data(URL,query,period=90) -> pd.DataFrame:
+def fetch_data(URL,query,period=1) -> pd.DataFrame:
     TSE_URL = "https://www.twse.com.tw/rwd/zh/announcement/punish"
     OTC_URL = "https://www.tpex.org.tw/www/zh-tw/bulletin/attention"
 
@@ -15,7 +15,7 @@ def fetch_data(URL,query,period=90) -> pd.DataFrame:
     start_date = (today - timedelta(days=period))
     
     if 'twse' in URL:
-        query["startDate"] = today.strftime("%Y%m%d")
+        query["startDate"] = start_date.strftime("%Y%m%d")
         query["endDate"] = today.strftime("%Y%m%d")
     else:
         query["startDate"] = start_date.strftime("%Y/%m/%d")
@@ -40,34 +40,34 @@ def fetch_data(URL,query,period=90) -> pd.DataFrame:
             with open("OTC_punished.json", "w", encoding="utf-8") as f:
                 json.dump(res.json(), f, ensure_ascii=False, indent=4)
                 
-if __name__ == "__main__":
-    TSE_URL = "https://www.twse.com.tw/rwd/zh/announcement/punish"
-    OTC_URL = "https://www.tpex.org.tw/www/zh-tw/bulletin/disposal"
+# if __name__ == "__main__":
+TSE_URL = "https://www.twse.com.tw/rwd/zh/announcement/punish"
+OTC_URL = "https://www.tpex.org.tw/www/zh-tw/bulletin/disposal"
 
-    TSE_query = {
-        "startDate": "",
-        "endDate": "",
-        "querytype": 3,
-        "stockNo" : "",
-        "selectType" : "",
-        "proceType" : "",
-        "remarkType" : "",
-        "sortKind": "STKNO",
-        "response": "json",
-        "_": time.time() * 1000
-    }
-    OTC_query = {
-        "startDate": "",
-        "endDate": "",
-        "code": "",
-        "cate": "",
-        "type": "all",
-        "reason": -1,
-        "measure": -1,
-        "order": "code",
-        "id": "",
-        "response": "json",
-    }
+TSE_query = {
+    "startDate": "",
+    "endDate": "",
+    "querytype": 3,
+    "stockNo" : "",
+    "selectType" : "",
+    "proceType" : "",
+    "remarkType" : "",
+    "sortKind": "STKNO",
+    "response": "json",
+    "_": time.time() * 1000
+}
+OTC_query = {
+    "startDate": "",
+    "endDate": "",
+    "code": "",
+    "cate": "",
+    "type": "all",
+    "reason": -1,
+    "measure": -1,
+    "order": "code",
+    "id": "",
+    "response": "json",
+}
 
-    for URL, query in [(TSE_URL, TSE_query) ,(OTC_URL, OTC_query)]:
-        fetch_data(URL, query)
+for URL, query in [(TSE_URL, TSE_query) ,(OTC_URL, OTC_query)]:
+    fetch_data(URL, query)

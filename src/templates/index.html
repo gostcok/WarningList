@@ -16,6 +16,17 @@
     </p>
 
     <style>
+        .punished_duration {
+            color: #d9534f;
+            font-size: clamp(0.8em, 2vw, 1em);
+            margin-top: 2px;
+            border-radius: 4px;
+            padding: 2px 4px;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -135,8 +146,13 @@
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
-                        <h3>${stock["證券代號"]}</h3>
-                        <p>${stock["證券名稱"]}</p>
+                        <h2>${stock["證券代號"]}</h2>
+                        <h3>${stock["證券名稱"]}</h3>
+                        ${stock["已處置"] && stock["處置起始時間"] ? `<h3 class="punished_duration">
+                            ${stock["處置起始時間"]}</br>
+                            |</br>
+                            ${stock["處置結束時間"]}
+                            </div>` : ""}
                     `;
 
                     // 添加點擊事件

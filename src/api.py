@@ -3,6 +3,7 @@ import sqlite3
 from apscheduler.schedulers.background import BackgroundScheduler
 from get_stock_notice_infos import fetch_data
 import notice_info_to_df
+import punished_info_to_df
 import get_trading_date
 
 app = Flask(__name__)
@@ -66,8 +67,8 @@ def query_punished_stocks():
     conn = sqlite3.connect("punished_stocks.db")
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
-    cur.execute("SELECT `證券代號` FROM stocks")
-    punished_stocks = {row["證券代號"] for row in cur.fetchall()}
+    cur.execute("SELECT `證券代號`, `處置起始時間`, `處置結束時間` FROM stocks")
+    punished_stocks = {row["證券代號"] : {'處置起始時間' : row['處置起始時間'], '處置結束時間' : row['處置結束時間']} for row in cur.fetchall()}
     conn.close()
     return punished_stocks
 
@@ -151,7 +152,7 @@ def get_potential_disposals():
 
     # 查詢已處置股票
     punished_stocks = query_punished_stocks()
-
+    
     # Extract unique stock names and codes
     unique_stocks = {}
     for row in stocks:
@@ -159,15 +160,25 @@ def get_potential_disposals():
         stock_name = row["證券名稱"]
         is_punished = stock_code in punished_stocks
         if stock_code not in unique_stocks:
-            unique_stocks[stock_code] = {"證券名稱": stock_name, "已處置": is_punished}
+            unique_stocks[stock_code] = {"證券名稱": stock_name,
+                                         "已處置": is_punished ,
+                                         "處置起始時間": punished_stocks[stock_code]['處置起始時間'] if is_punished else "",
+                                         "處置結束時間": punished_stocks[stock_code]['處置結束時間'] if is_punished else ""}
 
     # Return only unique stock names and codes
-    return jsonify([{ "證券代號": code, "證券名稱": info["證券名稱"], "已處置": info["已處置"] } for code, info in unique_stocks.items()])
+    return jsonify([{ "證券代號": code, "證券名稱": info["證券名稱"], "已處置": info["已處置"], "處置起始時間": info["處置起始時間"], "處置結束時間": info["處置結束時間"] } for code, info in unique_stocks.items()])
 
 @app.route("/disposed_stocks", methods=["GET"])
 def get_disposed_stocks():
-    punished_stocks = query_punished_stocks()
-    stocks = [{"證券代號": code} for code in punished_stocks]
+    conn = sqlite3.connect("punished_stocks.db")
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("SELECT `證券代號`, `處置起迄時間` FROM stocks")
+    stocks = [
+        {"證券代號": row["證券代號"], "處置起迄時間": row["處置起迄時間"]}
+        for row in cur.fetchall()
+    ]
+    conn.close()
     return jsonify(stocks)
 
 @app.route("/stocks/<stock_id>/conditions", methods=["GET"])

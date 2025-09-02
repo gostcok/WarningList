@@ -3,6 +3,7 @@ import json
 import pandas as pd
 import sqlite3
 import re
+import get_stock_punished_info
 
 def convert_date(date_str):
     start_date, end_date = date_str.split("～")
