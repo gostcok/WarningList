@@ -8,8 +8,8 @@ import get_trading_date
 
 app = Flask(__name__)
 
-def query_database(query, args=(), one=False):
-    conn = sqlite3.connect("notice_stocks.db")
+def query_database(query, args=(),db_path="notice_stocks.db", one=False):
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     cur.execute(query, args)
@@ -292,6 +292,35 @@ def get_stock_conditions(stock_id):
         conditions.append("29 日內有 11 日符合第 1~8 款條件")
 
     return jsonify(conditions)
+
+@app.route("/stocks/<stock_id>/targetInfo", methods=["GET"])
+def get_targetInfo(stock_id):
+
+    start_day_2, last_day_2 = get_last_n_trading_range(2)
+    start_day_4, last_day_4 = get_last_n_trading_range(4)
+    start_day_9, last_day_9 = get_last_n_trading_range(9)
+    start_day_29, last_day_29 = get_last_n_trading_range(29)
+    # 定義條件
+    lt=[]
+    # 條件 1: 連續 2 日符合第一款條件
+    query_1 = f"""
+        SELECT `target_info1_1`,`target_info1_2`
+        FROM target_info
+        WHERE `code` = ?
+        AND `ts` BETWEEN DATE('{start_day_2}') AND DATE('{last_day_2}')
+    """
+    targetInfo = query_database(query_1, [stock_id],"target_info.db", one=False)
+    
+    # 轉換為陣列格式
+    data = []
+    for row in targetInfo:
+        if row["target_info1_1"]:
+            data.append(row["target_info1_1"])
+        if row["target_info1_2"]:
+            data.append(row["target_info1_2"])
+            
+    return jsonify(data)
+
 
 def update_data():
     fetch_data()

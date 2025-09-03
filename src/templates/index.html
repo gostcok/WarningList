@@ -119,9 +119,9 @@
         <h2 id="details-title">股票名稱與代號</h2>
         <div id="triggerd_conditions">
         </div>
-        <div id="conditions">
+        <div id="condition">
             <h3>注意條件</h3>
-            <div class="condition">第1款</div>
+            <div class="condition" id="target_info_1">第1款</div>
             <div class="condition">第2款</div>
             <div class="condition">第3款</div>
             <div class="condition">第4款</div>
@@ -247,7 +247,9 @@
             // 取條件並顯示
             const conditions = await fetchConditions(stock["證券代號"]);
             showDetails(stock, conditions);
-
+            
+            const targetInfo = await fetchTargetInfo(stock["證券代號"]);
+            showTargetInfo(stock, targetInfo);
             // 確保在視窗可見（可選）
             detailsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
@@ -293,6 +295,16 @@
                 return [];
             }
         }
+        
+        async function fetchTargetInfo(stockCode) {
+            try {
+                const response = await fetch(`/stocks/${stockCode}/targetInfo`);
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching targetInfo:', error);
+                return [];
+            }
+        }
 
         function setActiveCard(card) {
             // 移除所有卡片的 active 樣式
@@ -319,6 +331,18 @@
             });
 
             detailsContainer.style.display = 'block';
+        }
+
+        function showTargetInfo(stock, targetInfo) {
+            const target_info_1 = document.getElementById('target_info_1');
+
+            target_info_1.innerHTML = '';
+            targetInfo.forEach(text => {
+                const el = document.createElement('div');
+                el.className = 'triggerd_condition';
+                el.textContent = text;
+                target_info_1.appendChild(el);
+            });
         }
 
         async function fetchDisposedStocks(sortBy = "code") {
