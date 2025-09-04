@@ -66,3 +66,11 @@
 2025-09-05 00:27:41.920 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
 2025-09-05 00:29:09.935 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
 2025-09-05 00:29:10.171 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-05 00:40:28.442 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-05 00:40:28.527 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-05 00:40:31.900 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-05 00:40:32.001 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-05 00:43:23.293 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-05 00:43:23.383 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-05 00:44:56.893 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-05 00:44:56.983 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
