@@ -248,7 +248,7 @@
             const conditions = await fetchConditions(stock["證券代號"]);
             showDetails(stock, conditions);
             
-            const targetInfo = await fetchTargetInfo(stock["證券代號"]);
+            const targetInfo = await fetchTargetInfo('8021');
             showTargetInfo(stock, targetInfo);
             // 確保在視窗可見（可選）
             detailsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
