@@ -306,8 +306,9 @@ def get_targetInfo(stock_id):
     # 條件 1: 連續 2 日符合第一款條件
     query_1 = f"""
         SELECT `pre_punished_only1`,`pre_punished_1~8`, `target_info1_1(%)`,`target_info1_2(%+N)`,`target_info2(%)`,`target_info2($)`,`target_info3(%)`,`target_info3(volume)`
+        SELECT `pre_punished_only1`,`pre_punished_1~8`, `target_info1_1(%)`,`target_info1_2(%+N)`,`target_info2(%)`,`target_info2($)`,`target_info3(%)`,`target_info3(volume)`
         FROM target_info
-        WHERE `code` = {stock_id}
+        WHERE `code` = ?
         AND `ts` BETWEEN DATE('{start_day_29}') AND DATE('{last_day_29}')
     """
     target_info_to_db(stock_id)
