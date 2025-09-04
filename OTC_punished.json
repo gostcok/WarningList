@@ -2,7 +2,7 @@
     "tables": [
         {
             "title": "上櫃處置有價證券資訊",
-            "subtitle2": "期間: 114/09/03~114/09/04，查詢範圍：全部上櫃有價證券",
+            "subtitle2": "期間: 114/09/04~114/09/05，查詢範圍：全部上櫃有價證券",
             "fields": [
                 "編號",
                 "公布日期",
@@ -58,19 +58,6 @@
                 ],
                 [
                     4,
-                    "114/08/20",
-                    "3555",
-                    "博士旺(../../mainboard/listed/company-detail.html?code=3555)",
-                    1,
-                    "114/08/21~114/09/03",
-                    "因連續3個營業日達本中心作業要點第四條第一項第一款(./attention.html)",
-                    "博士旺創新股份有限公司股票(代號：3555)最近30個營業日內曾發布處置，又因連續3個營業日達本中心作業要點第四條第一項第一款經本中心公布注意交易資訊，爰自114年08月21日起10個營業日(114年08月21日至114年09月03日，如遇休市、有價證券停止買賣、全日暫停交易則順延執行)改以人工管制之撮合終端機執行撮合作業(約每20分鐘撮合一次)，各證券商於投資人每日委託買賣該有價證券，應就其當日已委託之買賣，向該投資人收取全部之買進價金或賣出證券。但違約專戶委託買賣該有價證券時，不在此限。",
-                    "69.20",
-                    "N/A",
-                    "公布注意情形(./attention.html?code=3555&startDate=20250720&endDate=20250820&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=3555)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
-                ],
-                [
-                    5,
                     "114/08/29",
                     "3685",
                     "元創精密(../../mainboard/listed/company-detail.html?code=3685)",
@@ -83,7 +70,7 @@
                     "公布注意情形(./attention.html?code=3685&startDate=20250729&endDate=20250829&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=3685)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    5,
+                    4,
                     "114/08/26",
                     "3685",
                     "元創精密(../../mainboard/listed/company-detail.html?code=3685)",
@@ -96,7 +83,7 @@
                     "公布注意情形(./attention.html?code=3685&startDate=20250726&endDate=20250826&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=3685)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    6,
+                    5,
                     "114/08/29",
                     "4760",
                     "勤凱(../../mainboard/listed/company-detail.html?code=4760)",
@@ -109,20 +96,7 @@
                     "公布注意情形(./attention.html?code=4760&startDate=20250729&endDate=20250829&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=4760)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    7,
-                    "114/08/20",
-                    "4768",
-                    "晶呈科技(../../mainboard/listed/company-detail.html?code=4768)",
-                    1,
-                    "114/08/21~114/09/03",
-                    "因連續3個營業日達本中心作業要點第四條第一項第一款(./attention.html)",
-                    "晶呈科技股份有限公司股票(代號：4768)因連續3個營業日達本中心作業要點第四條第一項第一款經本中心公布注意交易資訊，爰自114年08月21日起10個營業日(114年08月21日至114年09月03日，如遇休市、有價證券停止買賣、全日暫停交易則順延執行)改以人工管制之撮合終端機執行撮合作業(約每5分鐘撮合一次)，各證券商於投資人每日委託買賣該有價證券數量單筆達10交易單位或多筆累積達30交易單位以上時，應就其當日已委託之買賣，向該投資人收取全部之買進價金或賣出證券。信用交易部分，則收足融資自備款或融券保證金。但信用交易了結及違約專戶委託買賣該有價證券時，不在此限。",
-                    "144.00",
-                    "120.00",
-                    "公布注意情形(./attention.html?code=4768&startDate=20250720&endDate=20250820&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=4768)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
-                ],
-                [
-                    8,
+                    6,
                     "114/08/29",
                     "4772",
                     "台特化(../../mainboard/listed/company-detail.html?code=4772)",
@@ -135,7 +109,7 @@
                     "公布注意情形(./attention.html?code=4772&startDate=20250729&endDate=20250829&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=4772)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    9,
+                    7,
                     "114/08/29",
                     "4931",
                     "新盛力(../../mainboard/listed/company-detail.html?code=4931)",
@@ -148,7 +122,7 @@
                     "公布注意情形(./attention.html?code=4931&startDate=20250729&endDate=20250829&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=4931)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    10,
+                    8,
                     "114/09/03",
                     "4991",
                     "環宇-KY(../../mainboard/listed/company-detail.html?code=4991)",
@@ -161,7 +135,7 @@
                     "公布注意情形(./attention.html?code=4991&startDate=20250803&endDate=20250903&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=4991)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    11,
+                    9,
                     "114/09/01",
                     "6584",
                     "南俊國際(../../mainboard/listed/company-detail.html?code=6584)",
@@ -174,7 +148,7 @@
                     "公布注意情形(./attention.html?code=6584&startDate=20250801&endDate=20250901&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=6584)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    12,
+                    10,
                     "114/09/01",
                     "65841",
                     "南俊國際一(../../mainboard/listed/company-detail.html?code=65841)",
@@ -187,7 +161,7 @@
                     "財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=6584)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    13,
+                    11,
                     "114/09/01",
                     "65842",
                     "南俊國際二(../../mainboard/listed/company-detail.html?code=65842)",
@@ -200,20 +174,7 @@
                     "財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=6584)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    14,
-                    "114/08/20",
-                    "6733",
-                    "博晟生醫(../../mainboard/listed/company-detail.html?code=6733)",
-                    1,
-                    "114/08/21~114/09/03",
-                    "因連續3個營業日達本中心作業要點第四條第一項第一款(./attention.html)",
-                    "博晟生醫股份有限公司股票(代號：6733)因連續3個營業日達本中心作業要點第四條第一項第一款經本中心公布注意交易資訊，爰自114年08月21日起10個營業日(114年08月21日至114年09月03日，如遇休市、有價證券停止買賣、全日暫停交易則順延執行)改以人工管制之撮合終端機執行撮合作業(約每5分鐘撮合一次)，各證券商於投資人每日委託買賣該有價證券數量單筆達10交易單位或多筆累積達30交易單位以上時，應就其當日已委託之買賣，向該投資人收取全部之買進價金或賣出證券。但違約專戶委託買賣該有價證券時，不在此限。",
-                    "40.90",
-                    "N/A",
-                    "公布注意情形(./attention.html?code=6733&startDate=20250720&endDate=20250820&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=6733)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
-                ],
-                [
-                    15,
+                    12,
                     "114/09/03",
                     "6735",
                     "美達科技(../../mainboard/listed/company-detail.html?code=6735)",
@@ -226,7 +187,7 @@
                     "公布注意情形(./attention.html?code=6735&startDate=20250803&endDate=20250903&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=6735)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    16,
+                    13,
                     "114/08/29",
                     "7402",
                     "邑錡(../../mainboard/listed/company-detail.html?code=7402)",
@@ -239,7 +200,7 @@
                     "公布注意情形(./attention.html?code=7402&startDate=20250729&endDate=20250829&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=7402)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    17,
+                    14,
                     "114/09/03",
                     "7703",
                     "銳澤(../../mainboard/listed/company-detail.html?code=7703)",
@@ -250,17 +211,30 @@
                     "285.50",
                     "32.97",
                     "公布注意情形(./attention.html?code=7703&startDate=20250803&endDate=20250903&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=7703)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
+                ],
+                [
+                    15,
+                    "114/09/04",
+                    "8038",
+                    "長園科(../../mainboard/listed/company-detail.html?code=8038)",
+                    1,
+                    "114/09/05~114/09/18",
+                    "最近10個營業日內有6個營業日",
+                    "長園科技實業股份有限公司股票(代號：8038)最近30個營業日內曾發布處置，又因最近10個營業日內有6個營業日經本中心公布注意交易資訊，爰自114年09月05日起10個營業日(114年09月05日至114年09月18日，如遇休市、有價證券停止買賣、全日暫停交易則順延執行)改以人工管制之撮合終端機執行撮合作業(約每20分鐘撮合一次)，各證券商於投資人每日委託買賣該有價證券，應就其當日已委託之買賣，向該投資人收取全部之買進價金或賣出證券。但違約專戶委託買賣該有價證券時，不在此限。",
+                    "58.50",
+                    "N/A",
+                    "公布注意情形(./attention.html?code=8038&startDate=20250804&endDate=20250904&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=8038)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ]
             ],
-            "startDate": "114/09/03",
-            "endDate": "114/09/04",
+            "startDate": "114/09/04",
+            "endDate": "114/09/05",
             "searchArea": "全部上櫃有價證券",
             "summary": "",
-            "footnote": "證券個數:17 總累計次數: 18",
+            "footnote": "證券個數:15 總累計次數: 16",
             "order": "code",
             "notes": []
         }
     ],
-    "date": "20250903~20250904",
+    "date": "20250904~20250905",
     "stat": "ok"
 }

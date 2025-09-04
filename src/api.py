@@ -5,6 +5,7 @@ from get_stock_notice_infos import fetch_data
 import notice_info_to_df
 import punished_info_to_df
 import get_trading_date
+from get_targetInfo_to_db import target_info_to_db
 
 app = Flask(__name__)
 
@@ -304,21 +305,36 @@ def get_targetInfo(stock_id):
     lt=[]
     # 條件 1: 連續 2 日符合第一款條件
     query_1 = f"""
-        SELECT `target_info1_1`,`target_info1_2`
+        SELECT `pre_punished_only1`,`pre_punished_1~8`, `target_info1_1(%)`,`target_info1_2(%+N)`,`target_info2(%)`,`target_info2($)`,`target_info3(%)`,`target_info3(volume)`
         FROM target_info
-        WHERE `code` = ?
-        AND `ts` BETWEEN DATE('{start_day_2}') AND DATE('{last_day_2}')
+        WHERE `code` = {stock_id}
+        AND `ts` BETWEEN DATE('{start_day_29}') AND DATE('{last_day_29}')
     """
-    targetInfo = query_database(query_1, [stock_id],"target_info.db", one=False)
+    target_info_to_db(stock_id)
+    targetInfo = query_database(query_1,db_path="target_info.db", one=False)
     
     # 轉換為陣列格式
     data = []
     for row in targetInfo:
-        if row["target_info1_1"]:
-            data.append(row["target_info1_1"])
-        if row["target_info1_2"]:
-            data.append(row["target_info1_2"])
-            
+        if row['pre_punished_only1'] : 
+            if row["target_info1_1(%)"]:
+                data.append(row["target_info1_1(%)"])
+            if row["target_info1_2(%+N)"]:
+                data.append(row["target_info1_2(%+N)"])
+        if row['pre_punished_1~8'] : 
+            if row["target_info1_1(%)"]:
+                data.append(row["target_info1_1(%)"])
+            if row["target_info1_2(%+N)"]:
+                data.append(row["target_info1_2(%+N)"])
+            if row["target_info2(%)"]:
+                data.append(row["target_info2(%)"])
+            if row["target_info2($)"]:
+                data.append(row["target_info2($)"])
+            if row["target_info3(%)"]:
+                data.append(row["target_info3(%)"])
+            if row["target_info3(volume)"]:
+                data.append(row["target_info3(volume)"])
+    
     return jsonify(data)
 
 
