@@ -26,7 +26,6 @@ kbars = api.kbars(
 
 df = pd.DataFrame({**kbars})
 df.ts = pd.to_datetime(df.ts)
-
 # df
 df = df.groupby(df.ts.dt.date).agg({ "Open": "first", "High": "max", "Low": "min", "Close": "last", "Volume": "sum", "Amount": "sum" })
 df.drop(columns=["Open", "High", "Low", 'Amount'], inplace=True)
@@ -34,11 +33,16 @@ df['code']=stock_code
 df['pct'] = df['Close'].pct_change()
 df['6pct'] = df['pct'].rolling(6).sum()
 
-df['iterm1_1'] = (df['6pct']*100 > 32).rolling(2).sum() >= 2
-df['iterm1_2'] = ((df['6pct']*100 > 25).rolling(2).sum() >= 2) & (df['Close'] - df['Close'].shift(5) >=50)
-df['target_pct_1(%)'] = (32-df['pct'].rolling(5).sum()*100).where(df['iterm1_1'])
-df['target_pct_2_v1(%)'] = (25-df['pct'].rolling(5).sum()*100).where(df['iterm1_2'])
-df['target_pct_2_v2($)'] = (df['Close'].shift(5) + 50).where(df['iterm1_2'])
+iterm1_1 = (df['6pct']*100 > 32)
+iterm1_2 = (df['6pct']*100 > 25) & (df['Close'] - df['Close'].shift(5) >=50)
+
+df['notice']= iterm1_1 | iterm1_2 
+df['pre_punished'] = (df['notice'].rolling(2).sum()==2) & (df['notice'].rolling(3).sum()!=3)
+
+df['target_pct_1(%)'] = (32-df['pct'].rolling(5).sum()*100).where(df['pre_punished'])
+df['target_pct_2_v1(%)'] = (25-df['pct'].rolling(5).sum()*100).where(df['pre_punished'])
+df['target_pct_2_v2($)'] = (df['Close'].shift(4) + 50).where(df['pre_punished'])
+
 df['target_info1_1'] = df.apply(
     lambda row: '一定處置' if pd.notna(row['target_pct_1(%)']) and row['target_pct_1(%)'] < -10
                 else f"漲超過{row['target_pct_1(%)']:.2f}%以上,價位:{row['Close']*(1+row['target_pct_1(%)']/100):.2f}"
@@ -53,7 +57,7 @@ df['target_info1_2'] = df.apply(
     axis=1
 )
 
-df=df[df['iterm1_1'] | df['iterm1_2']][['code','target_info1_1','target_info1_2']]
+df = df[df['pre_punished']][['target_info1_1','target_info1_2']]
 
 conn = sqlite3.connect("target_info.db")
 df.to_sql("target_info", conn, if_exists="replace", index=True)
