@@ -6,8 +6,11 @@ import notice_info_to_df
 import punished_info_to_df
 import get_trading_date
 from get_targetInfo_to_db import target_info_to_db
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 app = Flask(__name__)
+
+isfetchTargetinfo = False
 
 def query_database(query, args=(),db_path="notice_stocks.db", one=False):
     conn = sqlite3.connect(db_path)
@@ -175,6 +178,8 @@ def get_potential_disposals():
     
     # Extract unique stock names and codes
     unique_stocks = {}
+    futures, results = [], []
+    global isfetchTargetinfo
     for stock_code in all_stock:
         stock_name = all_stock[stock_code]['證券名稱']
         is_punished = stock_code in punished_stocks
@@ -184,6 +189,12 @@ def get_potential_disposals():
             "處置起始時間": punished_stocks[stock_code]['處置起始時間'] if is_punished else "",
             "處置結束時間": punished_stocks[stock_code]['處置結束時間'] if is_punished else ""
         }
+    if not isfetchTargetinfo : 
+        with ThreadPoolExecutor(max_workers=8) as ex:
+            for stock_code in all_stock.keys():
+                ex.submit(target_info_to_db, stock_code)
+    isfetchTargetinfo = True
+    
     # 轉成 list 後依 sort_by 排序
     result = [
         {
@@ -292,7 +303,7 @@ def get_stock_conditions(stock_id):
     if result_4 and result_4["count"] >= 11:
         conditions.append("29 日內有 11 日符合第 1~8 款條件")
 
-    return jsonify(conditions)
+    return jsonify(conditions) 
 
 @app.route("/stocks/<stock_id>/targetInfo", methods=["GET"])
 def get_targetInfo(stock_id):
@@ -305,35 +316,39 @@ def get_targetInfo(stock_id):
     lt=[]
     # 條件 1: 連續 2 日符合第一款條件
     query_1 = f"""
-        SELECT `pre_punished_only1`,`pre_punished_1~8`, `target_info1_1(%)`,`target_info1_2(%+N)`,`target_info2(%)`,`target_info2($)`,`target_info3(%)`,`target_info3(volume)`
+        SELECT `target_info1_1(%)`,`target_info1_2(%+N)`,`target_info2(%)`,`target_info2($)`,`target_info3(%)`,`target_info3(volume)`
         FROM target_info
         WHERE `code` = {stock_id}
         AND `ts` BETWEEN DATE('{start_day_29}') AND DATE('{last_day_29}')
     """
-    target_info_to_db(stock_id)
     targetInfo = query_database(query_1,db_path="target_info.db", one=False)
     
     # 轉換為陣列格式
-    data = []
+    data = {
+        "target_info_1": [],
+        "target_info_2": [],
+        "target_info_3": [],
+        "target_info_4": [],
+        "target_info_5": [],
+        "target_info_6": [],
+        "target_info_7": [],
+        "target_info_8": [],
+    }
     for row in targetInfo:
-        if row['pre_punished_only1'] : 
-            if row["target_info1_1(%)"]:
-                data.append(row["target_info1_1(%)"])
-            if row["target_info1_2(%+N)"]:
-                data.append(row["target_info1_2(%+N)"])
-        if row['pre_punished_1~8'] : 
-            if row["target_info1_1(%)"]:
-                data.append(row["target_info1_1(%)"])
-            if row["target_info1_2(%+N)"]:
-                data.append(row["target_info1_2(%+N)"])
-            if row["target_info2(%)"]:
-                data.append(row["target_info2(%)"])
-            if row["target_info2($)"]:
-                data.append(row["target_info2($)"])
-            if row["target_info3(%)"]:
-                data.append(row["target_info3(%)"])
-            if row["target_info3(volume)"]:
-                data.append(row["target_info3(volume)"])
+        if row["target_info1_1(%)"]:
+            data["target_info_1"].append(row["target_info1_1(%)"])
+        if row["target_info1_2(%+N)"]:
+            data["target_info_1"].append(row["target_info1_2(%+N)"])
+            
+        if row["target_info2(%)"]:
+            data["target_info_2"].append(row["target_info2(%)"])
+        if row["target_info2($)"]:
+            data["target_info_2"].append(row["target_info2($)"])
+            
+        if row["target_info3(%)"]:
+            data["target_info_3"].append(row["target_info3(%)"])
+        if row["target_info3(volume)"]:
+            data["target_info_3"].append(row["target_info3(volume)"])
     
     return jsonify(data)
 

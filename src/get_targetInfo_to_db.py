@@ -15,18 +15,34 @@ def get_api(simulation: bool = True) -> sj.Shioaji:
     return api
 api=get_api()  # 自動登入
 
-def target_info_to_db(stock_code = '5438') :
-    ##############抓取最新日期##############
-    db_path="trading_date.db"
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
+def convert_date() : 
+    date = datetime.now()
+    if date.hour<=19 : 
+        date = date - timedelta(1)
+    return date
+convertdate=convert_date()
+def get_kbar(stock_code) :
+    kbars = api.kbars(
+        contract=api.Contracts.Stocks[stock_code], 
+        start=(datetime.now() - timedelta(days=200)).strftime("%Y-%m-%d"), 
+        end=convertdate.strftime("%Y-%m-%d"), 
+    )
     
-    cursor.execute(f"""
-        SELECT date FROM trading_date
-        ORDER BY date DESC
-    """)
-    latest_date = cursor.fetchone()[0]
-    conn.close()
+    return kbars
+
+##############抓取最新日期##############
+db_path="trading_date.db"
+conn = sqlite3.connect(db_path)
+cursor = conn.cursor()
+
+cursor.execute(f"""
+    SELECT date FROM trading_date
+    ORDER BY date DESC
+""")
+latest_date = cursor.fetchone()[0]
+conn.close()
+
+def target_info_to_db(stock_code) :
     ##############抓取stock_info##############
     conn = sqlite3.connect("stock_info.db")
     cursor = conn.cursor()
@@ -51,19 +67,14 @@ def target_info_to_db(stock_code = '5438') :
                         SELECT * 
                         FROM target_info
                         WHERE `code` = {stock_code}
-                        AND `ts` = DATE({latest_date})
+                        AND `ts` = '{min(latest_date,convert_date().strftime("%Y-%m-%d"))}'
                         """
             )
             data = cursor.fetchall()[-1:]
-            print(data)
             if data:
-                return\
-        print("抓取資料中")
-        kbars = api.kbars(
-            contract=api.Contracts.Stocks[stock_code], 
-            start=(datetime.now() - timedelta(days=200)).strftime("%Y-%m-%d"), 
-            end=datetime.now().strftime("%Y-%m-%d"), 
-        )
+                return
+        print(f"fetch {stock_code}")
+        kbars=get_kbar(stock_code)
         
         df = pd.DataFrame({**kbars})
         df.ts = pd.to_datetime(df.ts)
@@ -103,72 +114,80 @@ def target_info_to_db(stock_code = '5438') :
         
         iterm3 = (df['6pct'] * 100 > iterm3_param) & (df['Volume'] > df['60volume'] * 5 )
         ############################################################注意條件############################################################
-        df['notice_only1']= (iterm1_1 | iterm1_2) 
-        df['notice_1~8']= (iterm1_1 | iterm1_2) | ((iterm2_1 | iterm2_2 | iterm2_3) & item2_all) | (iterm3)
-        ############################################################待處置條件############################################################            
-        df['pre_punished_only1'] = (df['notice_only1'].rolling(2).sum()==2) & (df['notice_only1'].rolling(3).sum()!=3) 
-        df['pre_punished_1~8'] = (df['notice_1~8'].rolling(4).sum()==4) & (df['notice_1~8'].rolling(5).sum()!=5) | (df['notice_1~8'].rolling(9).sum()==5) | (df['notice_1~8'].rolling(29).sum()==11) 
+        # df['notice_only1']= (iterm1_1 | iterm1_2) 
+        # df['notice_1~8']= (iterm1_1 | iterm1_2) | ((iterm2_1 | iterm2_2 | iterm2_3) & item2_all) | (iterm3)
+        # ############################################################待處置條件############################################################            
+        # df['pre_punished_only1'] = (df['notice_only1'].rolling(2).sum()==2) & (df['notice_only1'].rolling(3).sum()!=3) 
+        # df['pre_punished_1~8'] = (df['notice_1~8'].rolling(4).sum()==4) & (df['notice_1~8'].rolling(5).sum()!=5) | (df['notice_1~8'].rolling(9).sum()==5) | (df['notice_1~8'].rolling(29).sum()==11) 
         ############################################################進處置標準############################################################  
         ####################第一款標準####################
-        df['target_pct1_1(%)'] = (32-df['pct'].rolling(5).sum()*100).where(df['pre_punished_only1'] | df['pre_punished_1~8'])
-        df['target_pct1_2_v1(%)'] = (25-df['pct'].rolling(5).sum()*100).where(df['pre_punished_only1'] | df['pre_punished_1~8'])
-        df['target_pct1_2_v2($)'] = (df['Close'].shift(4) + 50).where(df['pre_punished_only1'] | df['pre_punished_1~8'])
+        df['target_pct1_1(%)'] = (iterm1_1_param-df['pct'].rolling(5).sum()*100)#.where(df['pre_punished_only1'] | df['pre_punished_1~8'])
+        df['target_pct1_2_v1(%)'] = (iterm1_2_v1_param-df['pct'].rolling(5).sum()*100)#.where(df['pre_punished_only1'] | df['pre_punished_1~8'])
+        df['target_pct1_2_v2($)'] = (df['Close'].shift(4) + iterm1_2_v2_param)#.where(df['pre_punished_only1'] | df['pre_punished_1~8'])
 
         df['target_info1_1(%)'] = df.apply(
-            lambda row: '一定處置' if pd.notna(row['target_pct1_1(%)']) and row['target_pct1_1(%)'] < -10
-                        else f"漲超過{row['target_pct1_1(%)']:.2f}%以上,價位:{row['Close']*(1+row['target_pct1_1(%)']/100):.2f}"
-                        if pd.notna(row['target_pct1_1(%)']) else None,
+            lambda row: "一定處置" if pd.notna(row['target_pct1_1(%)']) and row['target_pct1_1(%)'] < -10
+                    else "1-1 : 不會符合" if pd.notna(row['target_pct1_1(%)']) and row['target_pct1_1(%)'] > 10
+                    else f"1-1 : 漲幅 > {row['target_pct1_1(%)']:.2f}%,價位 : {row['Close']*(1+row['target_pct1_1(%)']/100):.2f}" if pd.notna(row['target_pct1_1(%)'])
+                    else None,
             axis=1
         )
 
         df['target_info1_2(%+N)'] = df.apply(
             lambda row: '一定處置' if (pd.notna(row['target_pct1_2_v1(%)'])) and (row['target_pct1_2_v1(%)'] < -10) and (row['target_pct1_2_v2($)'] < row['Close']*0.9 )
-                        else f"漲超過{row['target_pct1_2_v1(%)']:.2f}%以上,價位:{max(row['target_pct1_2_v2($)'],row['Close']*(1+row['target_pct1_2_v1(%)']/100)):.2f}"
-                        if pd.notna(row['target_pct1_2_v1(%)']) else None,
+                        else "1-2 : 不會符合" if pd.notna(row['target_pct1_2_v1(%)']) and ((row['target_pct1_2_v1(%)'] > 10) or (row['target_pct1_2_v2($)'] > row['Close']*1.1 )) 
+                        else f"1-2 : 漲幅 > {row['target_pct1_2_v1(%)']:.2f}% 且股價 > {max(row['target_pct1_2_v2($)'],row['Close']*(1+row['target_pct1_2_v1(%)']/100)):.2f}"
+                        if pd.notna(row['target_pct1_2_v1(%)']) 
+                        else None,
             axis=1
         )
         ####################第二款標準####################
-        df['target_pct2_1(%)'] = (100-df['Close'].pct_change(28)*100).where(df['pre_punished_1~8'])
-        df['target_pct2_2(%)'] = (130-df['Close'].pct_change(58)*100).where(df['pre_punished_1~8'])
-        df['target_pct2_3(%)'] = (160-df['Close'].pct_change(88)*100).where(df['pre_punished_1~8'])
+        df['target_pct2_1(%)'] = (100-df['Close'].pct_change(28)*100)#.where(df['pre_punished_1~8'])
+        df['target_pct2_2(%)'] = (130-df['Close'].pct_change(58)*100)#.where(df['pre_punished_1~8'])
+        df['target_pct2_3(%)'] = (160-df['Close'].pct_change(88)*100)#.where(df['pre_punished_1~8'])
 
-        df['target_pct_2($)'] = df['Close'].where(df['pre_punished_1~8'])
+        df['target_pct_2($)'] = df['Close']#.where(df['pre_punished_1~8'])
 
         df['target_info2(%)'] = df.apply(
-            lambda row: '起訖漲幅一定達標' if pd.notna(row['target_pct2_1(%)']) and max(row['target_pct2_1(%)'],row['target_pct2_2(%)'],row['target_pct2_3(%)']) < -10
-                        else f"漲超過{min(row['target_pct2_1(%)'],row['target_pct2_2(%)'],row['target_pct2_3(%)']):.2f}%以上"
-                        if pd.notna(row['target_pct2_1(%)']) else None,
+            lambda row: '2-1 : 一定達標' if pd.notna(row['target_pct2_1(%)']) and max(row['target_pct2_1(%)'],row['target_pct2_2(%)'],row['target_pct2_3(%)']) < -10
+                        else '2-1 : 不會達標' if pd.notna(row['target_pct2_1(%)']) and min(row['target_pct2_1(%)'],row['target_pct2_2(%)'],row['target_pct2_3(%)']) > 10
+                        else f"2-1 : 漲幅 > {min(row['target_pct2_1(%)'],row['target_pct2_2(%)'],row['target_pct2_3(%)']):.2f}%"
+                        if pd.notna(row['target_pct2_1(%)']) 
+                        else None,
             axis=1
         )
 
         df['target_info2($)'] = df.apply(
-            lambda row: f"價位:{row['target_pct_2($)']:.2f}"
+            lambda row: f"2-2 : 股價 > {row['target_pct_2($)']:.2f}"
                         if pd.notna(row['target_pct_2($)']) else None,
             axis=1
         )
         ####################第三款標準####################
-        df['target_pct3_v1(%)'] = (25-df['pct'].rolling(5).sum()*100).where(df['pre_punished_1~8'])
+        df['target_pct3_v1(%)'] = (iterm3_param-df['pct'].rolling(5).sum()*100)#.where(df['pre_punished_1~8'])
 
         # (59v'+v)/60 *5 < v => 59/11v' < v
-        df['target_pct3_v2(volume)'] = (df['Volume'].rolling(59).sum()/11).where(df['pre_punished_1~8'])
+        df['target_pct3_v2(volume)'] = (df['Volume'].rolling(59).sum()/11)#.where(df['pre_punished_1~8'])
 
         df['target_info3(%)'] = df.apply(
-            lambda row: '累積漲幅一定達標' if pd.notna(row['target_pct3_v1(%)']) and row['target_pct3_v1(%)'] < -10
-                        else f"漲超過{row['target_pct3_v1(%)']:.2f}%以上,價位:{ row['Close']*(1+row['target_pct3_v1(%)']/100):.2f}"
+            lambda row: '3-1 : 一定達標' if pd.notna(row['target_pct3_v1(%)']) and row['target_pct3_v1(%)'] < -10
+                        else '3-1 : 不會達標' if pd.notna(row['target_pct3_v1(%)']) and row['target_pct3_v1(%)'] > 10
+                        else f"3-1 : 漲幅 > {row['target_pct3_v1(%)']:.2f}% , 股價 : { row['Close']*(1+row['target_pct3_v1(%)']/100):.2f}"
                         if pd.notna(row['target_pct3_v1(%)']) else None,
             axis=1
         )
 
         df['target_info3(volume)'] = df.apply(
-            lambda row: f"量:{int(row['target_pct3_v2(volume)'])}"
-                        if pd.notna(row['target_pct3_v2(volume)']) else None,
+            lambda row: f"3-2 : 量 > {int(row['target_pct3_v2(volume)'])}"
+                        if pd.notna(row['target_pct3_v2(volume)']) 
+                        else None,
             axis=1
         )
 
-        df = df[df['pre_punished_only1'] | df['pre_punished_1~8']][['code','pre_punished_only1','pre_punished_1~8', 'target_info1_1(%)','target_info1_2(%+N)','target_info2(%)','target_info2($)','target_info3(%)','target_info3(volume)']]
+        df = df[['code','target_info1_1(%)','target_info1_2(%+N)','target_info2(%)','target_info2($)','target_info3(%)','target_info3(volume)']].tail(1)
 
         df.to_sql("target_info", conn, if_exists="append", index=True)
 
 if __name__ == "__main__":
+    # target_info_to_db('3363')
     target_info= pd.read_sql("SELECT * FROM target_info", sqlite3.connect("target_info.db"))
     print(target_info)

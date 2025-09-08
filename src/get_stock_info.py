@@ -7,7 +7,7 @@ dl = DataLoader()
 
 # 下載台股基本資料
 df = dl.taiwan_stock_info()
-
+dl.taiwan_stock_daily
 df = df.sort_values("stock_id")
 df = df.drop_duplicates(subset="stock_id", keep="first")
 df = df[~df["industry_category"].isin(["ETF", "大盤", "Index"])]
@@ -20,6 +20,6 @@ df = df[['stock_id','stock_name','type','date']]
 conn = sqlite3.connect("stock_info.db")
 df.to_sql("taiwan_stock_info", conn, if_exists="replace", index=False)
 conn.close()
-
+print("stock_info fetch successfully")
 
 

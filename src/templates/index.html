@@ -121,14 +121,22 @@
         </div>
         <div id="condition">
             <h3>注意條件</h3>
+            <div>第一款 (擇一符合)</div>
             <div class="condition" id="target_info_1">第1款</div>
-            <div class="condition">第2款</div>
-            <div class="condition">第3款</div>
-            <div class="condition">第4款</div>
-            <div class="condition">第5款</div>
-            <div class="condition">第6款</div>
-            <div class="condition">第7款</div>
-            <div class="condition">第8款</div>
+            <div>第二款 (需全符合)</div>
+            <div class="condition" id="target_info_2">第2款</div>
+            <div>第三款 (需全符合)</div>
+            <div class="condition" id="target_info_3">第3款</div>
+            <div>第四款</div>
+            <div class="condition" id="target_info_4">第4款</div>
+            <div>第五款</div>
+            <div class="condition" id="target_info_5">第5款</div>
+            <div>第六款</div>
+            <div class="condition" id="target_info_6">第6款</div>
+            <div>第七款</div>
+            <div class="condition" id="target_info_7">第7款</div>
+            <div>第八款</div>
+            <div class="condition" id="target_info_8">TDR 溢價</div>
         </div>
     </div>
 
@@ -333,16 +341,21 @@
             detailsContainer.style.display = 'block';
         }
 
-        function showTargetInfo(stock, targetInfo) {
-            const target_info_1 = document.getElementById('target_info_1');
+        function showTargetInfo(stock, targetInfoDict) {
+            for (let i = 1; i <= 7; i++) {
+                const div = document.getElementById(`target_info_${i}`);
+                div.innerHTML = '';
 
-            target_info_1.innerHTML = '';
-            targetInfo.forEach(text => {
-                const el = document.createElement('div');
-                el.className = 'triggerd_condition';
-                el.textContent = text;
-                target_info_1.appendChild(el);
-            });
+                const infoList = targetInfoDict[`target_info_${i}`];
+                if (infoList && infoList.length > 0) {
+                    infoList.forEach(text => {
+                        const el = document.createElement('div');
+                        el.className = 'triggerd_condition';
+                        el.textContent = text;
+                        div.appendChild(el);
+                    });
+                }
+            }
         }
 
         async function fetchDisposedStocks(sortBy = "code") {
