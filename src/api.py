@@ -308,10 +308,10 @@ def get_stock_conditions(stock_id):
 @app.route("/stocks/<stock_id>/targetInfo", methods=["GET"])
 def get_targetInfo(stock_id):
 
-    start_day_2, last_day_2 = get_last_n_trading_range(2)
-    start_day_4, last_day_4 = get_last_n_trading_range(4)
-    start_day_9, last_day_9 = get_last_n_trading_range(9)
-    start_day_29, last_day_29 = get_last_n_trading_range(29)
+    start_day_2, latest_day = get_last_n_trading_range(2)
+    start_day_4, latest_day = get_last_n_trading_range(4)
+    start_day_9, latest_day = get_last_n_trading_range(9)
+    start_day_29,latest_day = get_last_n_trading_range(29)
     # 定義條件
     lt=[]
     # 條件 1: 連續 2 日符合第一款條件
@@ -319,7 +319,7 @@ def get_targetInfo(stock_id):
         SELECT `target_info1_1(%)`,`target_info1_2(%+N)`,`target_info2(%)`,`target_info2($)`,`target_info3(%)`,`target_info3(volume)`
         FROM target_info
         WHERE `code` = {stock_id}
-        AND `ts` BETWEEN DATE('{start_day_29}') AND DATE('{last_day_29}')
+        AND `ts` = '{latest_day}'
     """
     targetInfo = query_database(query_1,db_path="target_info.db", one=False)
     
@@ -364,4 +364,4 @@ scheduler.add_job(update_data, 'cron', hour=0, minute=0)
 scheduler.start()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True , use_reloader=False)

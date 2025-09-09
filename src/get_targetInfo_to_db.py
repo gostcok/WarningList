@@ -1,34 +1,9 @@
-import shioaji as sj
-from dotenv import load_dotenv
-import os
+from login_api import get_api
 import pandas as pd
 from datetime import datetime, timedelta
 import sqlite3
 
-load_dotenv()
-def get_api(simulation: bool = True) -> sj.Shioaji:
-    api = sj.Shioaji(simulation=simulation)
-    api.login(
-        api_key=os.environ["API_KEY"],
-        secret_key=os.environ["SECRET_KEY"],
-    )
-    return api
-api=get_api()  # 自動登入
-
-def convert_date() : 
-    date = datetime.now()
-    if date.hour<=19 : 
-        date = date - timedelta(1)
-    return date
-convertdate=convert_date()
-def get_kbar(stock_code) :
-    kbars = api.kbars(
-        contract=api.Contracts.Stocks[stock_code], 
-        start=(datetime.now() - timedelta(days=200)).strftime("%Y-%m-%d"), 
-        end=convertdate.strftime("%Y-%m-%d"), 
-    )
-    
-    return kbars
+api = get_api()
 
 ##############抓取最新日期##############
 db_path="trading_date.db"
@@ -41,6 +16,15 @@ cursor.execute(f"""
 """)
 latest_date = cursor.fetchone()[0]
 conn.close()
+######################################
+def get_kbar(stock_code) :
+    kbars = api.kbars(
+        contract=api.Contracts.Stocks[stock_code], 
+        start=(datetime.now() - timedelta(days=200)).strftime("%Y-%m-%d"), 
+        end=latest_date, 
+    )
+    
+    return kbars
 
 def target_info_to_db(stock_code) :
     ##############抓取stock_info##############
@@ -52,6 +36,7 @@ def target_info_to_db(stock_code) :
                 WHERE `stock_id` = {stock_code}
                 """
     )
+    
     source = cursor.fetchone()[0] # twse or tpex
     conn.close()
     if source is None :
@@ -63,13 +48,10 @@ def target_info_to_db(stock_code) :
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?;", ("target_info",))
         exists = cursor.fetchone()
         if exists :
-            cursor.execute(f"""
-                        SELECT * 
-                        FROM target_info
-                        WHERE `code` = {stock_code}
-                        AND `ts` = '{min(latest_date,convert_date().strftime("%Y-%m-%d"))}'
-                        """
-            )
+            cursor.execute(f""" SELECT * FROM target_info 
+                            WHERE code = {stock_code} 
+                            AND ts = '{latest_date}' 
+                            """ )
             data = cursor.fetchall()[-1:]
             if data:
                 return
@@ -126,7 +108,7 @@ def target_info_to_db(stock_code) :
         df['target_pct1_2_v2($)'] = (df['Close'].shift(4) + iterm1_2_v2_param)#.where(df['pre_punished_only1'] | df['pre_punished_1~8'])
 
         df['target_info1_1(%)'] = df.apply(
-            lambda row: "一定處置" if pd.notna(row['target_pct1_1(%)']) and row['target_pct1_1(%)'] < -10
+            lambda row: "1-1 : 一定處置" if pd.notna(row['target_pct1_1(%)']) and row['target_pct1_1(%)'] < -10
                     else "1-1 : 不會符合" if pd.notna(row['target_pct1_1(%)']) and row['target_pct1_1(%)'] > 10
                     else f"1-1 : 漲幅 > {row['target_pct1_1(%)']:.2f}%,價位 : {row['Close']*(1+row['target_pct1_1(%)']/100):.2f}" if pd.notna(row['target_pct1_1(%)'])
                     else None,
@@ -134,7 +116,7 @@ def target_info_to_db(stock_code) :
         )
 
         df['target_info1_2(%+N)'] = df.apply(
-            lambda row: '一定處置' if (pd.notna(row['target_pct1_2_v1(%)'])) and (row['target_pct1_2_v1(%)'] < -10) and (row['target_pct1_2_v2($)'] < row['Close']*0.9 )
+            lambda row: '1-2 : 一定處置' if (pd.notna(row['target_pct1_2_v1(%)'])) and (row['target_pct1_2_v1(%)'] < -10) and (row['target_pct1_2_v2($)'] < row['Close']*0.9 )
                         else "1-2 : 不會符合" if pd.notna(row['target_pct1_2_v1(%)']) and ((row['target_pct1_2_v1(%)'] > 10) or (row['target_pct1_2_v2($)'] > row['Close']*1.1 )) 
                         else f"1-2 : 漲幅 > {row['target_pct1_2_v1(%)']:.2f}% 且股價 > {max(row['target_pct1_2_v2($)'],row['Close']*(1+row['target_pct1_2_v1(%)']/100)):.2f}"
                         if pd.notna(row['target_pct1_2_v1(%)']) 
@@ -188,6 +170,6 @@ def target_info_to_db(stock_code) :
         df.to_sql("target_info", conn, if_exists="append", index=True)
 
 if __name__ == "__main__":
-    # target_info_to_db('3363')
     target_info= pd.read_sql("SELECT * FROM target_info", sqlite3.connect("target_info.db"))
+    target_info = target_info[target_info['code']=='4976']
     print(target_info)

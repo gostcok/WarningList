@@ -1,33 +1,48 @@
-from FinMind.data import DataLoader
+from login_api import get_api
 import pandas as pd
+from datetime import datetime, timedelta
 import sqlite3
-import datetime
-# 設定 FinMind 無登入也可以使用（但有速率限制）
-api = DataLoader()
+
+
+
+def convert_date() : 
+    date = datetime.now()
+    if date.hour<=19 : 
+        date = date - timedelta(1)
+    return date
+
+def get_kbar(stock_code) :
+    kbars = api.kbars(
+        contract=api.Contracts.Stocks[stock_code], 
+        start=(datetime.now() - timedelta(days=200)).strftime("%Y-%m-%d"), 
+        end=convert_date().strftime("%Y-%m-%d"), 
+    )
+    
+    return kbars
 
 def save_to_database(df, db_name="trading_date.db"):
     conn = sqlite3.connect(db_name)
+    
     df.to_sql("trading_date", conn, if_exists="replace", index=False)
     conn.close()
+
+api=get_api()  # 自動登入
+
 # 抓出台灣上市股票的交易日（用台積電 2330 當樣板）
 try :
-    df = api.taiwan_stock_daily(
-        stock_id="2330",
-        start_date="2010-01-01",
-        end_date=datetime.datetime.now().strftime("%Y-%m-%d")
-    )
-
-    # 篩出交易日
-    trading_date = pd.DataFrame({"date": pd.to_datetime(df["date"].unique())})
-    trading_date = trading_date.sort_values("date").reset_index(drop=True)
-    trading_date['date'] = trading_date['date'].dt.date
+    kbars = get_kbar('2330')
     
+    trading_date = pd.DataFrame({**kbars})
+    trading_date.ts = pd.to_datetime(trading_date.ts)
+    trading_date['date'] = trading_date['ts'].dt.date
+    trading_date = trading_date.groupby(trading_date.date , as_index=False).agg({"date" : "last"})
+
     save_to_database(trading_date)
 except Exception as e:
     print(e)
 
 if __name__ == "__main__":
-    save_to_database(trading_date)
+    # save_to_database(trading_date)
     # 連接資料庫
     conn = sqlite3.connect("trading_date.db")
 
@@ -38,4 +53,4 @@ if __name__ == "__main__":
     conn.close()
 
     # 顯示前幾筆
-    print(df.tail())
+    print(df)

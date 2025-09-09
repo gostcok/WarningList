@@ -1,0 +1,4 @@
+2025-09-08 09:28:43.392 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-08 09:28:43.475 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-08 09:28:49.831 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-08 09:28:49.901 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC

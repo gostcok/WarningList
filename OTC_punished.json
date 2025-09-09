@@ -2,7 +2,7 @@
     "tables": [
         {
             "title": "上櫃處置有價證券資訊",
-            "subtitle2": "期間: 114/09/04~114/09/05，查詢範圍：全部上櫃有價證券",
+            "subtitle2": "期間: 114/09/08~114/09/09，查詢範圍：全部上櫃有價證券",
             "fields": [
                 "編號",
                 "公布日期",
@@ -19,19 +19,6 @@
             "data": [
                 [
                     1,
-                    "114/08/22",
-                    "3081",
-                    "聯亞(../../mainboard/listed/company-detail.html?code=3081)",
-                    1,
-                    "114/08/25~114/09/05",
-                    "連續5個營業日",
-                    "聯亞光電工業股份有限公司股票(代號：3081)最近30個營業日內曾發布處置，又因連續5個營業日經本中心公布注意交易資訊，爰自114年08月25日起10個營業日(114年08月25日至114年09月05日，如遇休市、有價證券停止買賣、全日暫停交易則順延執行)改以人工管制之撮合終端機執行撮合作業(約每20分鐘撮合一次)，各證券商於投資人每日委託買賣該有價證券，應就其當日已委託之買賣，向該投資人收取全部之買進價金或賣出證券。信用交易部分，則收足融資自備款或融券保證金。但信用交易了結及違約專戶委託買賣該有價證券時，不在此限。",
-                    "434.00",
-                    "258.33",
-                    "公布注意情形(./attention.html?code=3081&startDate=20250722&endDate=20250822&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=3081)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
-                ],
-                [
-                    2,
                     "114/08/29",
                     "3219",
                     "倚強科(../../mainboard/listed/company-detail.html?code=3219)",
@@ -44,7 +31,7 @@
                     "公布注意情形(./attention.html?code=3219&startDate=20250729&endDate=20250829&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=3219)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    3,
+                    2,
                     "114/09/01",
                     "33055",
                     "昇貿五(../../mainboard/listed/company-detail.html?code=33055)",
@@ -55,6 +42,19 @@
                     "172.00",
                     "N/A",
                     "公布注意情形(./attention.html?code=33055&startDate=20250801&endDate=20250901&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=3305)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
+                ],
+                [
+                    3,
+                    "114/09/08",
+                    "3363",
+                    "上詮(../../mainboard/listed/company-detail.html?code=3363)",
+                    1,
+                    "114/09/09~114/09/22",
+                    "連續5個營業日",
+                    "上詮光纖通信股份有限公司股票(代號：3363)最近30個營業日內曾發布處置，又因連續5個營業日經本中心公布注意交易資訊，爰自114年09月09日起10個營業日(114年09月09日至114年09月22日，如遇休市、有價證券停止買賣、全日暫停交易則順延執行)改以人工管制之撮合終端機執行撮合作業(約每20分鐘撮合一次)，各證券商於投資人每日委託買賣該有價證券，應就其當日已委託之買賣，向該投資人收取全部之買進價金或賣出證券。信用交易部分，則收足融資自備款或融券保證金。但信用交易了結及違約專戶委託買賣該有價證券時，不在此限。",
+                    "382.00",
+                    "N/A",
+                    "公布注意情形(./attention.html?code=3363&startDate=20250808&endDate=20250908&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=3363)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
                     4,
@@ -136,6 +136,19 @@
                 ],
                 [
                     9,
+                    "114/09/05",
+                    "5438",
+                    "東友(../../mainboard/listed/company-detail.html?code=5438)",
+                    1,
+                    "114/09/08~114/09/19",
+                    "因連續3個營業日達本中心作業要點第四條第一項第一款(./attention.html)",
+                    "東友科技股份有限公司股票(代號：5438)因連續3個營業日達本中心作業要點第四條第一項第一款經本中心公布注意交易資訊，爰自114年09月08日起10個營業日(114年09月08日至114年09月19日，如遇休市、有價證券停止買賣、全日暫停交易則順延執行)改以人工管制之撮合終端機執行撮合作業(約每5分鐘撮合一次)，各證券商於投資人每日委託買賣該有價證券數量單筆達10交易單位或多筆累積達30交易單位以上時，應就其當日已委託之買賣，向該投資人收取全部之買進價金或賣出證券。信用交易部分，則收足融資自備款或融券保證金。但信用交易了結及違約專戶委託買賣該有價證券時，不在此限。",
+                    "29.05",
+                    "30.58",
+                    "公布注意情形(./attention.html?code=5438&startDate=20250805&endDate=20250905&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=5438)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
+                ],
+                [
+                    10,
                     "114/09/01",
                     "6584",
                     "南俊國際(../../mainboard/listed/company-detail.html?code=6584)",
@@ -148,7 +161,7 @@
                     "公布注意情形(./attention.html?code=6584&startDate=20250801&endDate=20250901&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=6584)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    10,
+                    11,
                     "114/09/01",
                     "65841",
                     "南俊國際一(../../mainboard/listed/company-detail.html?code=65841)",
@@ -161,7 +174,7 @@
                     "財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=6584)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    11,
+                    12,
                     "114/09/01",
                     "65842",
                     "南俊國際二(../../mainboard/listed/company-detail.html?code=65842)",
@@ -174,7 +187,7 @@
                     "財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=6584)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    12,
+                    13,
                     "114/09/03",
                     "6735",
                     "美達科技(../../mainboard/listed/company-detail.html?code=6735)",
@@ -187,7 +200,7 @@
                     "公布注意情形(./attention.html?code=6735&startDate=20250803&endDate=20250903&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=6735)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    13,
+                    14,
                     "114/08/29",
                     "7402",
                     "邑錡(../../mainboard/listed/company-detail.html?code=7402)",
@@ -200,7 +213,7 @@
                     "公布注意情形(./attention.html?code=7402&startDate=20250729&endDate=20250829&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=7402)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    14,
+                    15,
                     "114/09/03",
                     "7703",
                     "銳澤(../../mainboard/listed/company-detail.html?code=7703)",
@@ -213,7 +226,7 @@
                     "公布注意情形(./attention.html?code=7703&startDate=20250803&endDate=20250903&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=7703)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ],
                 [
-                    15,
+                    16,
                     "114/09/04",
                     "8038",
                     "長園科(../../mainboard/listed/company-detail.html?code=8038)",
@@ -226,15 +239,15 @@
                     "公布注意情形(./attention.html?code=8038&startDate=20250804&endDate=20250904&type=code)\n財務業務資訊及股權異動(https://mops.twse.com.tw/mops/#/web/t146sb05?companyId=8038)\n財務資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb01_q1)\n交易資訊重點專區(https://mops.twse.com.tw/mops/#/web/t211sb05)\n"
                 ]
             ],
-            "startDate": "114/09/04",
-            "endDate": "114/09/05",
+            "startDate": "114/09/08",
+            "endDate": "114/09/09",
             "searchArea": "全部上櫃有價證券",
             "summary": "",
-            "footnote": "證券個數:15 總累計次數: 16",
+            "footnote": "證券個數:16 總累計次數: 17",
             "order": "code",
             "notes": []
         }
     ],
-    "date": "20250904~20250905",
+    "date": "20250908~20250909",
     "stat": "ok"
 }

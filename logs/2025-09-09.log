@@ -1,0 +1,174 @@
+2025-09-09 08:41:01.773 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 08:41:01.872 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 08:41:09.091 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 08:41:09.199 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 08:44:14.479 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 08:44:14.564 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 08:53:05.073 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 08:53:05.148 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 08:53:19.707 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 08:53:19.995 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 08:53:33.649 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 08:53:33.879 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 08:53:38.162 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 08:53:38.438 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 08:53:42.274 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 08:53:42.496 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 09:50:17.503 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 09:50:17.573 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 11:06:29.196 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 11:06:29.340 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 11:06:29.898 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:06:29.898 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:06:36.671 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 11:06:36.785 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 11:06:37.011 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:06:37.011 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:07:19.728 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 11:07:19.866 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 11:07:20.103 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:07:20.103 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:35:43.497 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 11:35:43.597 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 11:35:43.840 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:35:43.840 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:35:48.174 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 11:35:48.350 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 11:35:48.585 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:35:48.585 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:37:12.454 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 11:37:12.523 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 11:37:12.764 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:37:12.764 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:37:22.434 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 11:37:22.543 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 11:37:22.788 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:37:22.788 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:37:30.230 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 11:37:30.308 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 11:37:30.540 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 11:37:30.540 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:19:13.043 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:19:13.111 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:19:13.742 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:19:13.742 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:19:36.274 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:19:36.352 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:19:36.589 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:19:36.589 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:19:59.592 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:19:59.767 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:20:00.018 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:20:00.018 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:20:05.214 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:20:05.290 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:20:05.528 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:20:05.528 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:21:21.459 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:21:21.657 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:21:21.896 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:21:21.896 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:21:32.749 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:21:32.853 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:21:33.076 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:21:33.076 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:21:58.714 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:21:59.542 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:21:59.799 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:21:59.799 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:22:25.997 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:22:26.762 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:22:26.997 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:22:26.997 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:22:30.018 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:22:30.099 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:22:30.338 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:22:30.338 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:27:41.936 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:27:42.059 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:27:42.293 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:27:42.293 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:28:00.973 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:28:01.041 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:28:01.280 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:28:01.280 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:37:18.947 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:37:19.028 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:37:19.270 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:37:19.270 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:38:10.157 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:38:10.247 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:38:10.485 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:38:10.485 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:43:36.297 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:43:36.387 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:43:36.616 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:43:36.616 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:49:05.641 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:49:05.727 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:49:05.960 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:49:05.960 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:49:33.635 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:49:33.714 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:49:33.964 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:49:33.964 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:52:54.515 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:52:54.604 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:52:54.851 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:52:54.851 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:55:59.589 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:55:59.760 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:55:59.994 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:55:59.994 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:57:23.538 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:57:23.615 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:57:23.851 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:57:23.851 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:57:36.778 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:57:36.864 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:57:37.089 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:57:37.089 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:58:07.242 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 12:58:07.330 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 12:58:07.558 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 12:58:07.558 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:09:36.087 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 13:09:36.178 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 13:09:36.417 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:09:36.417 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:10:56.371 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 13:10:56.433 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 13:10:56.683 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:10:56.683 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:12:23.282 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 13:12:23.362 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 13:12:23.609 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:12:23.609 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:13:18.174 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 13:13:18.244 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 13:13:18.492 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:13:18.492 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:27:24.538 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 13:27:24.614 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 13:27:24.864 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:27:24.864 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:30:58.888 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 13:30:58.996 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 13:30:59.238 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:30:59.238 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:38:47.707 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 13:38:47.813 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 13:38:48.072 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:38:48.072 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:39:14.007 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 13:39:14.082 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 13:39:14.314 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:39:14.314 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:40:05.744 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 13:40:05.854 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 13:40:06.089 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:40:06.089 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:41:39.698 | INFO     | get_stock_punished_info:fetch_data:31 - Data fetched successfully from TWSE
+2025-09-09 13:41:39.820 | INFO     | get_stock_punished_info:fetch_data:39 - Data fetched successfully from OTC
+2025-09-09 13:41:40.060 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
+2025-09-09 13:41:40.060 | WARNING  | importlib._bootstrap:_call_with_frames_removed:241 - Optional: pip install shioaji[speed] or uv add shioaji --extra speed for better performance.
