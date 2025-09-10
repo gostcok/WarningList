@@ -131,7 +131,7 @@ def target_info_to_db(stock_code) :
         df['target_pct_2($)'] = df['Close']#.where(df['pre_punished_1~8'])
 
         df['target_info2(%)'] = df.apply(
-            lambda row: '2-1 : 一定達標' if pd.notna(row['target_pct2_1(%)']) and max(row['target_pct2_1(%)'],row['target_pct2_2(%)'],row['target_pct2_3(%)']) < -10
+            lambda row: '2-1 : 一定達標' if pd.notna(row['target_pct2_1(%)']) and min(row['target_pct2_1(%)'],row['target_pct2_2(%)'],row['target_pct2_3(%)']) < -10
                         else '2-1 : 不會達標' if pd.notna(row['target_pct2_1(%)']) and min(row['target_pct2_1(%)'],row['target_pct2_2(%)'],row['target_pct2_3(%)']) > 10
                         else f"2-1 : 漲幅 > {min(row['target_pct2_1(%)'],row['target_pct2_2(%)'],row['target_pct2_3(%)']):.2f}%"
                         if pd.notna(row['target_pct2_1(%)']) 
@@ -171,5 +171,6 @@ def target_info_to_db(stock_code) :
 
 if __name__ == "__main__":
     target_info= pd.read_sql("SELECT * FROM target_info", sqlite3.connect("target_info.db"))
-    target_info = target_info[target_info['code']=='4976']
+    # target_info = target_info[target_info['code']=='4976']
+    target_info = target_info[target_info['ts']== (datetime.now()-timedelta(days=1)).strftime("%Y-%m-%d")]
     print(target_info)
